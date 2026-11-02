@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Trắc nghiệm Mạng máy tính — 125 câu</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --surface:#ffffff; --surface-2:#f1f4fa;
+    --text:#0f172a; --muted:#64748b; --line:#e3e8f2;
+    --accent:#4f46e5; --accent-2:#7c3aed; --accent-soft:#eef2ff;
+    --green:#059669; --green-soft:#ecfdf5;
+    --red:#dc2626; --red-soft:#fef2f2;
+    --amber:#d97706; --amber-soft:#fffbeb;
+    --glow1:#dbeafe; --glow2:#ede9fe;
+    --shadow:0 14px 36px rgba(15,23,42,.08);
+    --radius:20px;
+  }
+  [data-theme="dark"]{
+    --bg:#080d19; --surface:#101828; --surface-2:#182236;
+    --text:#e8eefc; --muted:#93a1b8; --line:#243149;
+    --accent:#818cf8; --accent-2:#a78bfa; --accent-soft:#1e1b4b;
+    --green:#34d399; --green-soft:#052e24;
+    --red:#f87171; --red-soft:#3b0d12;
+    --amber:#fbbf24; --amber-soft:#2d2107;
+    --glow1:rgba(99,102,241,.16); --glow2:rgba(168,85,247,.13);
+    --shadow:0 18px 44px rgba(0,0,0,.38);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; min-height:100vh; color:var(--text);
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    background:
+      radial-gradient(900px 520px at 8% -12%, var(--glow1), transparent 62%),
+      radial-gradient(820px 520px at 102% -4%, var(--glow2), transparent 58%),
+      var(--bg);
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit}
+  code{
+    font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:6px;
+    padding:1px 5px; font-size:.9em;
+  }
+  .hidden{display:none !important}
+  .screen{min-height:100vh}
+
+  /* ---------- Start ---------- */
+  .start-wrap{
+    max-width:1140px; margin:0 auto; padding:60px 24px 80px;
+    display:grid; grid-template-columns:1.12fr .88fr; gap:52px; align-items:center;
+    min-height:100vh; position:relative;
+  }
+  .start-theme{position:absolute; top:22px; right:24px; z-index:5}
+  .result-theme{position:absolute; top:22px; right:24px; z-index:5}
+  #resultScreen{position:relative}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); background:var(--accent-soft);
+    border:1px solid var(--line); padding:7px 12px; border-radius:999px;
+  }
+  .hero h1{
+    font-size:clamp(34px,4.4vw,58px); line-height:1.08; letter-spacing:-.035em;
+    margin:22px 0 18px; font-weight:850;
+  }
+  .hero h1 em{
+    font-style:normal; display:inline-block;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero > p{color:var(--muted); font-size:16px; line-height:1.7; max-width:540px; margin:0}
+  .hero-points{list-style:none; padding:0; margin:24px 0 0; display:grid; gap:10px}
+  .hero-points li{display:flex; gap:10px; align-items:center; color:var(--text); font-size:14.5px}
+  .hero-points li::before{
+    content:"✓"; flex:0 0 22px; width:22px; height:22px; border-radius:50%;
+    display:grid; place-items:center; font-size:12px; font-weight:800;
+    color:var(--green); background:var(--green-soft); border:1px solid color-mix(in srgb,var(--green) 25%,transparent);
+  }
+  .hero-stats{display:flex; gap:30px; margin-top:34px; padding-top:26px; border-top:1px solid var(--line)}
+  .hero-stats div{display:flex; flex-direction:column; gap:2px}
+  .hero-stats b{font-size:26px; letter-spacing:-.03em}
+  .hero-stats span{font-size:12.5px; color:var(--muted)}
+
+  .start-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:26px;
+    box-shadow:var(--shadow); padding:28px; position:relative; overflow:hidden;
+  }
+  .start-card::before{
+    content:""; position:absolute; inset:0 0 auto; height:3px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  }
+  .start-card h2{margin:0 0 16px; font-size:17px; letter-spacing:-.01em}
+  .mode-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px}
+  .mode-card{
+    text-align:left; background:var(--surface-2); border:1.5px solid var(--line);
+    border-radius:14px; padding:14px; cursor:pointer; color:var(--text);
+    display:flex; flex-direction:column; gap:4px; transition:border-color .16s, background .16s, transform .16s;
+  }
+  .mode-card:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .mode-card.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+  .mode-icon{font-size:19px; line-height:1.2}
+  .mode-card b{font-size:13.5px}
+  .mode-card small{font-size:11px; color:var(--muted); line-height:1.4}
+  .count-box{
+    margin-top:16px; padding:14px; border:1px solid var(--line); border-radius:14px;
+    background:var(--surface-2);
+  }
+  .count-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:9px}
+  .count-head label{font-size:13px; font-weight:750}
+  .count-head span{font-size:11px; color:var(--muted)}
+  .count-row{display:flex; align-items:center; gap:8px}
+  .count-step{
+    width:38px; height:38px; flex:0 0 38px; border-radius:10px; cursor:pointer;
+    border:1px solid var(--line); background:var(--surface); color:var(--text);
+    font-size:18px; font-weight:800; line-height:1;
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .count-step:hover{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+  .count-input{
+    width:78px; height:38px; text-align:center; font:inherit; font-size:16px; font-weight:800;
+    color:var(--text); background:var(--surface); border:1.5px solid var(--line); border-radius:10px;
+    -moz-appearance:textfield; appearance:textfield;
+  }
+  .count-input::-webkit-outer-spin-button,.count-input::-webkit-inner-spin-button{-webkit-appearance:none; margin:0}
+  .count-input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
+  .count-unit{font-size:12.5px; color:var(--muted); margin-left:2px}
+  .count-presets{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px}
+  .preset{
+    border:1px solid var(--line); background:var(--surface); color:var(--muted);
+    border-radius:8px; padding:5px 9px; font-size:11.5px; font-weight:700; cursor:pointer;
+    transition:border-color .14s, color .14s, background .14s;
+  }
+  .preset:hover,.preset.active{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+  .switches{display:flex; flex-wrap:wrap; gap:18px; margin:16px 0 20px}
+  .switch{display:flex; align-items:center; gap:9px; font-size:13.5px; color:var(--muted); cursor:pointer; user-select:none}
+  .switch input{position:absolute; opacity:0; width:1px; height:1px}
+  .switch span{
+    width:40px; height:22px; border-radius:999px; background:var(--line); position:relative;
+    transition:background .18s; flex:0 0 auto;
+  }
+  .switch span::after{
+    content:""; position:absolute; top:2px; left:2px; width:18px; height:18px;
+    border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:transform .18s;
+  }
+  .switch input:checked + span{background:var(--accent)}
+  .switch input:checked + span::after{transform:translateX(18px)}
+  .switch input:focus-visible + span{outline:2px solid var(--accent); outline-offset:2px}
+  .hint{font-size:11.5px; color:var(--muted); line-height:1.6; margin:16px 0 0; text-align:center}
+  .source-note{font-size:10.8px; color:var(--muted); line-height:1.55; margin:10px 0 0; text-align:center; opacity:.85}
+  .hint kbd{
+    font-family:inherit; font-size:10.5px; font-weight:700;
+    background:var(--surface-2); border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:5px; padding:1px 5px;
+  }
+  .resume-card{
+    margin-top:16px; padding:13px 14px; border:1px dashed color-mix(in srgb,var(--accent) 40%,var(--line));
+    background:var(--accent-soft); border-radius:12px;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .resume-card b{display:block; font-size:13px}
+  .resume-card small{display:block; font-size:11.5px; color:var(--muted); margin-top:2px}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border:1px solid transparent; border-radius:12px; padding:12px 18px;
+    font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap;
+    transition:transform .14s, background .16s, border-color .16s, box-shadow .16s, opacity .16s;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn:disabled{opacity:.42; cursor:not-allowed; transform:none}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; box-shadow:0 8px 20px rgba(79,70,229,.26)}
+  .btn-primary:hover:not(:disabled){box-shadow:0 10px 26px rgba(79,70,229,.34)}
+  .btn-soft{background:var(--accent-soft); color:var(--accent); border-color:color-mix(in srgb,var(--accent) 22%,transparent)}
+  .btn-soft:hover:not(:disabled){border-color:var(--accent)}
+  .btn-ghost{background:transparent; color:var(--muted); border-color:var(--line)}
+  .btn-ghost:hover:not(:disabled){color:var(--text); border-color:var(--muted)}
+  .btn-check{background:var(--amber); color:#fff; box-shadow:0 8px 18px color-mix(in srgb,var(--amber) 30%,transparent)}
+  .btn-danger{background:var(--red); color:#fff}
+  .btn-sm{padding:9px 14px; font-size:13px; border-radius:10px}
+  .btn-block{width:100%; margin-top:4px}
+  .icon-btn{
+    width:36px; height:36px; border-radius:10px; border:1px solid var(--line);
+    background:var(--surface); color:var(--muted); cursor:pointer;
+    display:grid; place-items:center; font-size:17px; line-height:1;
+    transition:color .15s, border-color .15s, background .15s;
+  }
+  .icon-btn:hover{color:var(--text); border-color:var(--muted)}
+
+  /* ---------- Quiz ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    padding:12px 22px; background:var(--surface); border-bottom:1px solid var(--line);
+  }
+  .topbar-left,.topbar-right{display:flex; align-items:center; gap:11px; min-width:0}
+  .brand{display:flex; align-items:center; gap:9px; font-weight:800; font-size:14px; white-space:nowrap}
+  .brand-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .chip{
+    font-size:11.5px; font-weight:700; color:var(--accent);
+    background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 18%,transparent);
+    padding:4px 9px; border-radius:999px; white-space:nowrap;
+  }
+  .timer{
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums;
+    padding:5px 9px; background:var(--surface-2); border-radius:8px; border:1px solid var(--line);
+  }
+  .progress-line{height:3px; background:var(--line); position:sticky; top:61px; z-index:29}
+  #progressFill{height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .25s ease}
+  .quiz-layout{
+    max-width:1220px; margin:0 auto; padding:26px 22px 70px;
+    display:grid; grid-template-columns:minmax(0,1fr) 302px; gap:22px; align-items:start;
+  }
+  .q-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:28px 30px 26px;
+  }
+  .q-head{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+  .q-counter{font-size:12.5px; font-weight:800; color:var(--accent); letter-spacing:.02em}
+  .q-head-spacer{flex:1}
+  .badge{
+    font-size:11.5px; font-weight:700; color:var(--muted);
+    background:var(--surface-2); border:1px solid var(--line); padding:3px 9px; border-radius:999px;
+  }
+  .status-pill{
+    font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:999px;
+    border:1px solid transparent;
+  }
+  .status-pill.ok{color:var(--green); background:var(--green-soft); border-color:color-mix(in srgb,var(--green) 26%,transparent)}
+  .status-pill.no{color:var(--red); background:var(--red-soft); border-color:color-mix(in srgb,var(--red) 26%,transparent)}
+  .q-text{font-size:21.5px; line-height:1.5; letter-spacing:-.012em; margin:14px 0 20px; font-weight:750}
+  .q-note{
+    margin:0 0 18px; padding:12px 15px; border-radius:11px;
+    background:var(--surface-2); border-left:3px solid var(--accent);
+    font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+    font-size:12.5px; line-height:1.7; white-space:pre-wrap; color:var(--text);
+  }
+  .options{display:grid; gap:9px}
+  .option{
+    display:flex; align-items:center; gap:13px; width:100%; text-align:left;
+    padding:13px 15px; border:1.5px solid var(--line); border-radius:13px;
+    background:var(--surface); color:var(--text); cursor:pointer;
+    transition:border-color .15s, background .15s, transform .15s, opacity .15s;
+  }
+  .option:hover:not(:disabled){border-color:var(--accent); background:var(--accent-soft); transform:translateX(2px)}
+  .option .letter{
+    flex:0 0 31px; width:31px; height:31px; border-radius:50%;
+    display:grid; place-items:center; font-size:13px; font-weight:800;
+    background:var(--surface-2); color:var(--muted); border:1px solid var(--line);
+  }
+  .option.multi .letter{border-radius:9px}
+  .option .opt-text{flex:1; font-size:14.5px; line-height:1.5}
+  .option.selected{border-color:var(--accent); background:var(--accent-soft)}
+  .option.selected .letter{background:var(--accent); border-color:var(--accent); color:#fff}
+  .option.correct{border-color:var(--green); background:var(--green-soft)}
+  .option.correct .letter{background:var(--green); border-color:var(--green); color:#fff}
+  .option.wrong{border-color:var(--red); background:var(--red-soft)}
+  .option.wrong .letter{background:var(--red); border-color:var(--red); color:#fff}
+  .option.missed{border-color:var(--green); border-style:dashed}
+  .option.dim{opacity:.58}
+  .option:disabled{cursor:default; transform:none}
+  .feedback{
+    margin-top:18px; padding:15px 17px; border-radius:13px; border:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .feedback.ok{background:var(--green-soft); border-color:color-mix(in srgb,var(--green) 28%,transparent)}
+  .feedback.no{background:var(--red-soft); border-color:color-mix(in srgb,var(--red) 28%,transparent)}
+  .fb-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:7px}
+  .fb-head b{font-size:14.5px}
+  .feedback.ok .fb-head b{color:var(--green)}
+  .feedback.no .fb-head b{color:var(--red)}
+  .fb-key{font-size:12px; font-weight:700; color:var(--muted); background:var(--surface); border:1px solid var(--line); padding:3px 8px; border-radius:7px}
+  .feedback p{margin:0; font-size:13.5px; line-height:1.65; color:var(--text); white-space:pre-line}
+  .fb-auto{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-top:11px; font-size:11.5px; font-weight:600; color:var(--muted);
+  }
+  .fb-auto-bar{
+    flex:1 1 90px; min-width:60px; height:4px; border-radius:999px; overflow:hidden;
+    background:color-mix(in srgb, var(--text) 12%, transparent);
+  }
+  .fb-next{
+    margin-left:auto; border:0; border-radius:8px; padding:6px 11px;
+    font:inherit; font-size:11.5px; font-weight:800; cursor:pointer; white-space:nowrap;
+    background:var(--accent); color:#fff; box-shadow:0 4px 10px color-mix(in srgb,var(--accent) 28%,transparent);
+  }
+  .fb-next:hover{filter:brightness(1.06)}
+  .fb-auto-bar i{
+    display:block; height:100%; width:100%; border-radius:inherit;
+    background:var(--accent); transform-origin:left;
+    animation:autoAdvance linear forwards;
+  }
+  .feedback.ok .fb-auto-bar i{background:var(--green)}
+  .feedback.no .fb-auto-bar i{background:var(--red)}
+  @keyframes autoAdvance{from{transform:scaleX(1)} to{transform:scaleX(0)}}
+  .opt-notes{
+    margin-top:11px; padding:11px 13px; border:1px dashed var(--line); border-radius:10px;
+    display:grid; gap:6px; background:color-mix(in srgb, var(--surface) 55%, transparent);
+  }
+  .opt-note{font-size:12.5px; line-height:1.6; color:var(--muted)}
+  .opt-note b{color:var(--text); margin-right:5px}
+  .q-actions{display:flex; align-items:center; gap:10px; margin-top:24px; flex-wrap:wrap}
+  .q-actions-spacer{flex:1}
+  .kbd-hint{font-size:11.5px; color:var(--muted); margin:16px 4px 0; line-height:1.8}
+  .kbd-hint kbd{
+    font-family:inherit; font-size:10.5px; font-weight:700;
+    background:var(--surface); border:1px solid var(--line); border-bottom-width:2px;
+    border-radius:5px; padding:1px 5px;
+  }
+  .quiz-side{position:sticky; top:86px}
+  .side-card{background:var(--surface); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); padding:17px}
+  .side-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+  .side-head b{font-size:13.5px}
+  .side-head span{font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+  .legend{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:13px}
+  .legend span{display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--muted)}
+  .dot{width:8px; height:8px; border-radius:3px; display:inline-block; background:var(--surface-2); border:1px solid var(--line)}
+  .dot.answered{background:var(--accent-soft); border-color:var(--accent)}
+  .dot.correct{background:var(--green); border-color:var(--green)}
+  .dot.wrong{background:var(--red); border-color:var(--red)}
+  .palette{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(36px,1fr)); gap:6px;
+    max-height:min(650px, calc(100vh - 250px)); overflow-y:auto; padding:5px 7px 5px 5px;
+    scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+  }
+  .palette::-webkit-scrollbar{width:7px}
+  .palette::-webkit-scrollbar-thumb{background:var(--line); border-radius:99px}
+  .palette::-webkit-scrollbar-track{background:transparent}
+  .pal-btn{
+    aspect-ratio:1; border-radius:9px; border:1px solid var(--line);
+    background:var(--surface-2); color:var(--muted); font-size:11.5px; font-weight:700;
+    cursor:pointer; display:grid; place-items:center; padding:0;
+    transition:transform .12s, border-color .14s, background .14s, color .14s;
+  }
+  .pal-btn:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-1px)}
+  .pal-btn.answered{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .pal-btn.correct{background:var(--green); border-color:var(--green); color:#fff}
+  .pal-btn.wrong{background:var(--red); border-color:var(--red); color:#fff}
+  .pal-btn.current{outline:2px solid var(--accent); outline-offset:2px}
+
+  /* ---------- Result ---------- */
+  .result-wrap{max-width:1020px; margin:0 auto; padding:40px 22px 80px}
+  .score-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:26px;
+    box-shadow:var(--shadow); padding:34px;
+    display:grid; grid-template-columns:210px minmax(0,1fr); gap:38px; align-items:center;
+  }
+  .ring{
+    --pct:0; width:190px; height:190px; border-radius:50%; margin:0 auto;
+    background:conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--surface-2) 0);
+    display:grid; place-items:center; position:relative;
+    box-shadow:inset 0 0 0 1px var(--line);
+  }
+  .ring-inner{
+    width:144px; height:144px; border-radius:50%; background:var(--surface);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+  }
+  .ring-inner strong{font-size:38px; letter-spacing:-.04em; line-height:1}
+  .ring-inner span{font-size:11.5px; color:var(--muted); margin-top:5px}
+  .score-copy h1{margin:12px 0 6px; font-size:32px; letter-spacing:-.03em}
+  .score-copy > p{margin:0; color:var(--muted); font-size:14.5px}
+  .score-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:22px 0}
+  .score-stats div{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:11px 12px}
+  .score-stats b{display:block; font-size:21px; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+  .score-stats span{font-size:11px; color:var(--muted)}
+  .result-actions{display:flex; gap:9px; flex-wrap:wrap}
+  .review-section{margin-top:30px}
+  .review-head{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px}
+  .review-head h2{margin:0; font-size:20px; letter-spacing:-.02em}
+  .tabs{display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:4px}
+  .tab{
+    border:0; background:transparent; color:var(--muted); padding:7px 11px;
+    border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer;
+  }
+  .tab.active{background:var(--surface); color:var(--text); box-shadow:0 2px 6px rgba(15,23,42,.08)}
+  .tab span{font-size:10.5px; opacity:.7; margin-left:4px}
+  .review-list{display:grid; gap:11px}
+  .rev-item{
+    background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--muted);
+    border-radius:14px; padding:16px 18px;
+  }
+  .rev-item.correct{border-left-color:var(--green)}
+  .rev-item.wrong{border-left-color:var(--red)}
+  .rev-item.empty{border-left-color:var(--amber)}
+  .rev-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .rev-num{font-size:12px; font-weight:800; color:var(--accent)}
+  .rev-tag{font-size:10.5px; font-weight:800; padding:3px 8px; border-radius:999px}
+  .rev-tag.correct{color:var(--green); background:var(--green-soft)}
+  .rev-tag.wrong{color:var(--red); background:var(--red-soft)}
+  .rev-tag.empty{color:var(--amber); background:var(--amber-soft)}
+  .rev-q{margin:9px 0 11px; font-size:15.5px; font-weight:650; line-height:1.55}
+  .rev-note{
+    margin:0 0 10px; padding:9px 12px; border-radius:8px; background:var(--surface-2);
+    font-family:ui-monospace,Consolas,monospace; font-size:11.5px; white-space:pre-wrap; color:var(--muted);
+  }
+  .rev-opt{
+    display:flex; align-items:center; gap:9px; padding:7px 10px; margin:5px 0;
+    border:1px solid transparent; border-radius:9px; background:var(--surface-2);
+    font-size:13.5px; line-height:1.45;
+  }
+  .rev-opt .letter{
+    flex:0 0 25px; width:25px; height:25px; border-radius:7px; display:grid; place-items:center;
+    font-size:11px; font-weight:800; color:var(--muted); background:var(--surface); border:1px solid var(--line);
+  }
+  .rev-opt .rev-opt-text{flex:1}
+  .rev-opt.key{background:var(--green-soft); border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+  .rev-opt.key .letter{background:var(--green); border-color:var(--green); color:#fff}
+  .rev-opt.wrong{background:var(--red-soft); border-color:color-mix(in srgb,var(--red) 30%,transparent)}
+  .rev-opt.wrong .letter{background:var(--red); border-color:var(--red); color:#fff}
+  .rev-tags{display:flex; gap:5px; flex-wrap:wrap; justify-content:flex-end}
+  .mini{font-size:9.5px; font-weight:800; font-style:normal; padding:2px 6px; border-radius:999px; white-space:nowrap}
+  .mini.you{background:var(--surface); color:var(--text); border:1px solid var(--line)}
+  .mini.key{background:var(--green); color:#fff}
+  .rev-exp{
+    margin:11px 0 0; padding:10px 12px; border-radius:9px;
+    background:var(--surface-2); border-left:2px solid var(--accent);
+    font-size:13px; line-height:1.65; color:var(--muted); white-space:pre-line;
+  }
+  .rev-item .opt-notes{margin:9px 0; background:var(--surface-2); border-style:solid}
+  .rev-exp b{color:var(--text); margin-right:5px}
+  .empty-state{
+    text-align:center; padding:44px 20px; border:1px dashed var(--line);
+    border-radius:14px; color:var(--muted); font-size:14px; background:var(--surface);
+  }
+
+  /* ---------- Toast / Modal / Theme ---------- */
+  .toast{
+    position:fixed; left:50%; bottom:26px; transform:translate(-50%,10px);
+    background:#0f172a; color:#fff; padding:10px 16px; border-radius:10px;
+    font-size:13px; font-weight:600; opacity:0; pointer-events:none;
+    transition:opacity .2s, transform .2s; z-index:80; box-shadow:0 12px 30px rgba(0,0,0,.3);
+    max-width:calc(100vw - 40px); text-align:center;
+  }
+  [data-theme="dark"] .toast{background:#e8eefc; color:#0f172a}
+  .toast.show{opacity:1; transform:translate(-50%,0)}
+  .modal{position:fixed; inset:0; z-index:90; display:grid; place-items:center; padding:20px}
+  .modal::before{content:""; position:absolute; inset:0; background:rgba(15,23,42,.55); backdrop-filter:blur(4px)}
+  .modal-box{
+    position:relative; width:min(440px,100%); background:var(--surface);
+    border:1px solid var(--line); border-radius:18px; padding:24px;
+    box-shadow:0 30px 70px rgba(0,0,0,.35);
+  }
+  .modal-box h3{margin:0 0 8px; font-size:18px; letter-spacing:-.02em}
+  .modal-box p{margin:0; color:var(--muted); font-size:13.5px; line-height:1.65; white-space:pre-line}
+  .modal-actions{display:flex; justify-content:flex-end; gap:9px; margin-top:22px}
+
+  @media (max-width:980px){
+    .start-wrap{grid-template-columns:1fr; gap:34px; padding-top:44px; align-items:start}
+    .start-card{max-width:560px}
+    .quiz-layout{grid-template-columns:1fr; gap:16px}
+    .quiz-side{position:static; order:2}
+    .palette{max-height:210px}
+    .score-card{grid-template-columns:1fr; text-align:center; gap:24px}
+    .score-copy h1{font-size:27px}
+    .score-stats{grid-template-columns:repeat(2,1fr)}
+    .result-actions{justify-content:center}
+    .review-head{align-items:flex-start}
+  }
+  @media (max-width:620px){
+    .topbar{padding:10px 13px; gap:8px}
+    .brand span:last-child{display:none}
+    .chip{display:none}
+    .timer{font-size:12px}
+    .quiz-layout{padding:14px 12px 60px}
+    .q-card{padding:20px 17px}
+    .q-text{font-size:18.5px}
+    .option{padding:11px 12px; gap:10px}
+    .option .opt-text{font-size:13.5px}
+    .start-wrap{padding:34px 16px 70px}
+    .start-theme{top:14px; right:14px}
+    .result-theme{top:12px; right:12px}
+    .hero-stats{gap:20px}
+    .hero-stats b{font-size:22px}
+    .start-card{padding:20px}
+    .mode-grid{grid-template-columns:1fr}
+    .start-card .hint{display:none}
+    .count-presets{display:grid; grid-template-columns:repeat(5,1fr); gap:5px}
+    .count-presets .preset{padding:5px 0; font-size:10.5px; text-align:center}
+    .q-actions .btn{flex:1}
+    .q-actions .btn-ghost{flex:0 0 auto}
+    .kbd-hint{display:none}
+    .score-card{padding:24px 18px}
+    .ring{width:160px; height:160px}
+    .ring-inner{width:120px; height:120px}
+    .ring-inner strong{font-size:31px}
+    .rev-item{padding:14px}
+    .rev-opt{flex-wrap:wrap}
+    .rev-tags{justify-content:flex-start; width:100%; margin-left:34px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ================= START ================= -->
+  <section id="startScreen" class="screen">
+    <button type="button" id="themeBtnStart" class="icon-btn start-theme theme-toggle" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện sáng/tối">🌙</button>
+    <div class="start-wrap">
+      <div class="hero">
+        <span class="eyebrow">Mạng máy tính · Ôn thi</span>
+        <h1>125 câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
+        <p>Toàn bộ ngân hàng câu hỏi từ file Word, gồm cả câu chọn nhiều đáp án. Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
+        <ul class="hero-points">
+          <li>Phản hồi đúng/sai và giải thích chi tiết</li>
+          <li>Hỗ trợ câu chọn 2–3 đáp án</li>
+          <li>Tự lưu tiến độ, làm lại riêng câu sai</li>
+          <li>Chọn số câu, chấm ngay và tự chuyển câu</li>
+        </ul>
+        <div class="hero-stats">
+          <div><b>125</b><span>câu hỏi</span></div>
+          <div><b>48</b><span>câu chọn nhiều</span></div>
+          <div><b>4–5</b><span>lựa chọn mỗi câu</span></div>
+        </div>
+      </div>
+
+      <div class="start-card">
+        <h2>Chọn chế độ làm bài</h2>
+        <div class="mode-grid">
+          <button type="button" class="mode-card" data-mode="practice" aria-pressed="false">
+            <span class="mode-icon">🎯</span>
+            <b>Luyện tập</b>
+            <small>Chấm ngay từng câu, xem giải thích</small>
+          </button>
+          <button type="button" class="mode-card" data-mode="exam" aria-pressed="false">
+            <span class="mode-icon">⏱️</span>
+            <b>Thi thử</b>
+            <small>Làm hết rồi mới chấm, có đồng hồ</small>
+          </button>
+          <button type="button" class="mode-card selected" data-mode="quiz" aria-pressed="true">
+            <span class="mode-icon">⚡</span>
+            <b>Quiz nhanh</b>
+            <small>Chấm ngay, tự sang câu sau</small>
+          </button>
+        </div>
+
+        <div class="count-box">
+          <div class="count-head">
+            <label for="qCount" id="countLabel">Số câu muốn làm</label>
+            <span id="countHint">Tối đa 125 câu</span>
+          </div>
+          <div class="count-row">
+            <button type="button" id="countMinus" class="count-step" aria-label="Giảm số câu">−</button>
+            <input id="qCount" class="count-input" type="number" min="1" max="125" step="1" value="125" inputmode="numeric" aria-labelledby="countLabel">
+            <button type="button" id="countPlus" class="count-step" aria-label="Tăng số câu">+</button>
+            <span class="count-unit">câu</span>
+          </div>
+          <div class="count-presets" id="countPresets">
+            <button type="button" class="preset" data-count="10">10 câu</button>
+            <button type="button" class="preset" data-count="20">20 câu</button>
+            <button type="button" class="preset" data-count="30">30 câu</button>
+            <button type="button" class="preset" data-count="50">50 câu</button>
+            <button type="button" class="preset active" data-count="125">Tất cả</button>
+          </div>
+        </div>
+
+        <div class="switches">
+          <label class="switch"><input type="checkbox" id="shuffleQ"><span></span>Trộn câu hỏi</label>
+          <label class="switch"><input type="checkbox" id="shuffleO"><span></span>Trộn đáp án</label>
+        </div>
+
+        <button type="button" id="startBtn" class="btn btn-primary btn-block">Bắt đầu làm bài <span>→</span></button>
+        <div id="resumeBox" class="resume-card hidden"></div>
+        <p class="hint">Phím tắt: <kbd>A</kbd>–<kbd>E</kbd> chọn · <kbd>Enter</kbd> kiểm tra/tiếp · <kbd>Space</kbd> câu tiếp · <kbd>←</kbd><kbd>→</kbd> chuyển câu</p>
+        <p class="source-note">Đáp án đã đối chiếu file “120_cau_hoi_trac_nghiem_mang_may_tinh_dap_an.docx”. Vài câu gốc ghi “chọn N” nhưng thực tế có số đáp án khác — phần giải thích khi chấm sẽ ghi rõ.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="quizScreen" class="screen hidden">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button type="button" id="exitBtn" class="icon-btn" title="Thoát bài làm" aria-label="Thoát bài làm">←</button>
+        <div class="brand"><span class="brand-dot"></span><span>Mạng máy tính</span></div>
+        <span id="modeChip" class="chip">Luyện tập</span>
+      </div>
+      <div class="topbar-right">
+        <button type="button" class="icon-btn theme-toggle" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện sáng/tối">🌙</button>
+        <span id="timer" class="timer">00:00</span>
+        <button type="button" id="submitBtn" class="btn btn-primary btn-sm">Nộp bài</button>
+      </div>
+    </header>
+    <div class="progress-line"><div id="progressFill"></div></div>
+
+    <main class="quiz-layout">
+      <div class="quiz-main">
+        <article class="q-card">
+          <div class="q-head">
+            <span id="qCounter" class="q-counter">Câu 1 / 125</span>
+            <span id="qBadge" class="badge hidden"></span>
+            <span class="q-head-spacer"></span>
+            <span id="qStatus" class="status-pill hidden"></span>
+          </div>
+          <h2 id="qText" class="q-text"></h2>
+          <pre id="qNote" class="q-note hidden"></pre>
+          <div id="options" class="options" role="group" aria-label="Các đáp án"></div>
+          <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+          <div class="q-actions">
+            <button type="button" id="prevBtn" class="btn btn-ghost">← Câu trước</button>
+            <span class="q-actions-spacer"></span>
+            <button type="button" id="checkBtn" class="btn btn-check hidden">Kiểm tra</button>
+            <button type="button" id="nextBtn" class="btn btn-primary">Câu tiếp →</button>
+          </div>
+        </article>
+        <p class="kbd-hint">Phím tắt: <kbd>A</kbd>–<kbd>E</kbd> chọn · <kbd>Enter</kbd> kiểm tra/tiếp · <kbd>Space</kbd> câu tiếp · <kbd>←</kbd><kbd>→</kbd> chuyển câu</p>
+      </div>
+
+      <aside class="quiz-side">
+        <div class="side-card">
+          <div class="side-head"><b>Danh sách câu</b><span id="answeredCount">0/125</span></div>
+          <div class="legend">
+            <span><i class="dot answered"></i>Đã làm</span>
+            <span><i class="dot correct"></i>Đúng</span>
+            <span><i class="dot wrong"></i>Sai</span>
+          </div>
+          <div id="palette" class="palette"></div>
+        </div>
+      </aside>
+    </main>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="resultScreen" class="screen hidden">
+    <button type="button" class="icon-btn result-theme theme-toggle" title="Đổi giao diện sáng/tối" aria-label="Đổi giao diện sáng/tối">🌙</button>
+    <main class="result-wrap">
+      <section class="score-card">
+        <div class="ring" id="scoreRing" style="--pct:0">
+          <div class="ring-inner"><strong id="scorePct">0%</strong><span>kết quả</span></div>
+        </div>
+        <div class="score-copy">
+          <span class="eyebrow">Kết quả bài làm</span>
+          <h1 id="resultTitle">Hoàn thành!</h1>
+          <p id="resultSub"></p>
+          <div class="score-stats">
+            <div><b id="statCorrect">0</b><span>Đúng</span></div>
+            <div><b id="statWrong">0</b><span>Sai</span></div>
+            <div><b id="statEmpty">0</b><span>Chưa làm</span></div>
+            <div><b id="statTime">00:00</b><span>Thời gian</span></div>
+          </div>
+          <div class="result-actions">
+            <button type="button" id="retryWrongBtn" class="btn btn-soft">Làm lại câu sai</button>
+            <button type="button" id="retryAllBtn" class="btn btn-primary">Làm lại từ đầu</button>
+            <button type="button" id="homeBtn" class="btn btn-ghost">Trang chủ</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="review-section">
+        <div class="review-head">
+          <h2>Xem lại bài làm</h2>
+          <div class="tabs" id="reviewTabs">
+            <button type="button" class="tab active" data-filter="all">Tất cả <span id="tabAll"></span></button>
+            <button type="button" class="tab" data-filter="wrong">Câu sai <span id="tabWrong"></span></button>
+            <button type="button" class="tab" data-filter="empty">Chưa làm <span id="tabEmpty"></span></button>
+          </div>
+        </div>
+        <div id="reviewList" class="review-list"></div>
+      </section>
+    </main>
+  </section>
+
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <h3 id="modalTitle">Xác nhận</h3>
+    <p id="modalText"></p>
+    <div class="modal-actions">
+      <button type="button" id="modalCancel" class="btn btn-ghost">Hủy</button>
+      <button type="button" id="modalOk" class="btn btn-primary">Đồng ý</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [{"id":1,"q":"Trong mô hình client-server, vai trò của server bao gồm những gì?","note":null,"opts":["Luôn hoạt động 24/7","Có IP động thay đổi theo thời gian","Thường đặt tại Data Center","Không bao giờ thay đổi phần cứng"],"pick":2,"a":[0,2],"exp":"Server thường hoạt động liên tục 24/7 và đặt tại data center; IP của server thường là IP tĩnh, không đổi liên tục.","notes":null},{"id":2,"q":"Các dịch vụ nào thường yêu cầu độ tin cậy cao của TCP?","note":null,"opts":["HTTP tải trang web","Truyền video trực tuyến live-stream","Email (SMTP, IMAP)","VoIP thời gian thực","FTP"],"pick":3,"a":[0,2,4],"exp":"TCP phù hợp với HTTP, email và FTP vì cần dữ liệu đầy đủ, đúng thứ tự. Live-stream và VoIP ưu tiên độ trễ thấp nên thường dùng UDP.","notes":{"0":"Tải trang web — cần dữ liệu đầy đủ, đúng thứ tự.","1":"Truyền video trực tiếp — ưu tiên độ trễ thấp, thường dùng UDP.","2":"Gửi/nhận email — cần tin cậy, dùng TCP.","3":"Gọi thoại thời gian thực — nhạy cảm với trễ, thường dùng UDP.","4":"Truyền tệp — cần đúng và đủ dữ liệu, dùng TCP."}},{"id":3,"q":"Một người dùng tải một file từ web server qua HTTP/1.0 (không persistent). Trang có 1 HTML + 4 ảnh, cần bao nhiêu kết nối TCP?","note":null,"opts":["1","4","5","6"],"pick":1,"a":[2],"exp":"HTTP/1.0 không persistent: mỗi object cần một kết nối TCP. 1 HTML + 4 ảnh = 5 kết nối.","notes":null},{"id":4,"q":"Các yếu tố nào có thể gây trễ (delay) trong mạng?","note":null,"opts":["Trễ xử lý tại router","Trễ truyền tải (transmission delay)","Trễ lan truyền (propagation delay)","Trễ lưu trữ tại ổ cứng"],"pick":3,"a":[0,1,2],"exp":"Trễ mạng gồm trễ xử lý, trễ truyền tải và trễ lan truyền; trễ lưu trữ ổ cứng không phải thành phần của trễ truyền gói.","notes":null},{"id":5,"q":"Địa chỉ IPv4 dài bao nhiêu bit?","note":null,"opts":["16","32","64","128"],"pick":1,"a":[1],"exp":"IPv4 dùng địa chỉ 32 bit (4 octet).","notes":null},{"id":6,"q":"Ưu điểm của kiến trúc P2P so với client-server là gì?","note":null,"opts":["Tự mở rộng năng lực khi thêm peer mới","Dễ quản lý tập trung","Ít phụ thuộc vào một điểm cố định","Không cần bảo mật"],"pick":2,"a":[0,2],"exp":"P2P tận dụng tài nguyên của các peer nên tự mở rộng khi thêm peer và giảm phụ thuộc vào một server trung tâm.","notes":null},{"id":7,"q":"Các đặc điểm của UDP là gì?","note":null,"opts":["Không đảm bảo thứ tự gói tin","Có cơ chế kiểm soát tắc nghẽn","Không yêu cầu bắt tay (handshake)","Phù hợp ứng dụng thời gian thực","Đảm bảo độ tin cậy"],"pick":3,"a":[0,2,3],"exp":"UDP không bắt tay, không đảm bảo thứ tự hay độ tin cậy, không kiểm soát tắc nghẽn; phù hợp ứng dụng thời gian thực.","notes":null},{"id":8,"q":"Giao thức tầng ứng dụng dùng để phân giải tên miền là:","note":null,"opts":["HTTP","FTP","DNS","SMTP"],"pick":1,"a":[2],"exp":"DNS phân giải tên miền thành địa chỉ IP, ví dụ www.google.com → 142.250.x.x.","notes":{"0":"HTTP — tải trang web (cổng 80/443).","1":"FTP — truyền tệp (cổng 20/21).","2":"DNS — phân giải tên miền (cổng 53).","3":"SMTP — gửi email (cổng 25)."}},{"id":9,"q":"Các phương pháp phân giải tên miền trong mạng bao gồm:","note":null,"opts":["File hosts","Giao thức DNS","Giao thức SMTP","Giao thức FTP"],"pick":2,"a":[0,1],"exp":"Tên miền có thể được phân giải qua file hosts cục bộ hoặc hệ thống DNS.","notes":null},{"id":10,"q":"Một mạng LAN sử dụng switch 24 cổng. Số collision domain là:","note":null,"opts":["1","12","23","24"],"pick":1,"a":[3],"exp":"Mỗi cổng của switch là một collision domain, nên switch 24 cổng có 24 collision domain.","notes":null},{"id":11,"q":"Các tầng nào thuộc mô hình OSI có thể thực hiện kiểm tra lỗi?","note":null,"opts":["Ứng dụng","Liên kết dữ liệu","Vật lý","Vận chuyển"],"pick":2,"a":[1,3],"exp":"Tầng liên kết dữ liệu kiểm tra lỗi bằng FCS/CRC; tầng vận chuyển kiểm tra bằng checksum.","notes":null},{"id":12,"q":"Các giao thức thuộc tầng ứng dụng gồm:","note":null,"opts":["HTTP","FTP","IP","DNS","ARP"],"pick":3,"a":[0,1,3],"exp":"HTTP, FTP, DNS là giao thức tầng ứng dụng; IP thuộc tầng mạng, ARP gắn với tầng liên kết.","notes":{"0":"HTTP — tầng ứng dụng, tải web.","1":"FTP — tầng ứng dụng, truyền tệp.","2":"IP — tầng mạng, đánh địa chỉ và định tuyến.","3":"DNS — tầng ứng dụng, phân giải tên miền.","4":"ARP — ánh xạ IP → MAC, gắn với tầng liên kết."}},{"id":13,"q":"Trong bảng định tuyến, khi có nhiều mục khớp, router chọn đường nào?","note":null,"opts":["Đường có prefix dài nhất","Đường có metric thấp nhất","Đường có băng thông cao nhất","Ngẫu nhiên"],"pick":1,"a":[0],"exp":"Router dùng longest prefix match: tiền tố khớp dài nhất được ưu tiên.","notes":null},{"id":14,"q":"Chức năng của tầng vận chuyển bao gồm:","note":null,"opts":["Định tuyến gói tin","Cung cấp kết nối logic giữa tiến trình","Chia nhỏ dữ liệu thành segment","Xử lý khung dữ liệu"],"pick":2,"a":[1,2],"exp":"Tầng vận chuyển tạo kết nối logic giữa các tiến trình và chia dữ liệu thành segment.","notes":null},{"id":15,"q":"Một router nhận gói IP đích 192.168.10.25/24. Bảng định tuyến: Router gửi ra:","note":"- 192.168.10.0/25 → Interface 1\n- 192.168.10.0/24 → Interface 2","opts":["Interface 1","Interface 2","Cả 2","Drop"],"pick":1,"a":[0],"exp":"192.168.10.25 thuộc 192.168.10.0/25 (dải .0–.127), khớp tiền tố /25 dài hơn nên đi Interface 1.","notes":null},{"id":16,"q":"Đặc điểm của HTTP/1.1 so với HTTP/1.0:","note":null,"opts":["Persistent connection","Luôn đóng kết nối sau mỗi object","Giảm overhead thiết lập TCP","Chỉ hỗ trợ GET"],"pick":2,"a":[0,2],"exp":"HTTP/1.1 giữ kết nối persistent, tái sử dụng TCP nên giảm overhead thiết lập kết nối.","notes":null},{"id":17,"q":"Các thành phần của một URL gồm:","note":null,"opts":["Scheme","IP nguồn","Hostname","Path","Port"],"pick":3,"a":[0,2,3],"exp":"URL cơ bản gồm scheme, hostname và path. Port là thành phần tùy chọn (mặc định 80/443).","notes":null},{"id":18,"q":"Khi thiết kế mạng LAN, yếu tố ảnh hưởng tới băng thông:","note":null,"opts":["Loại cáp","Khoảng cách","Phần mềm duyệt web","Chuẩn Ethernet"],"pick":3,"a":[0,1,3],"exp":"Loại cáp, khoảng cách và chuẩn Ethernet đều ảnh hưởng băng thông; phần mềm duyệt web thì không.","notes":null},{"id":19,"q":"Các dịch vụ của tầng mạng bao gồm:","note":null,"opts":["Định tuyến","Phân giải tên miền","Chuyển tiếp gói tin","Kiểm soát luồng"],"pick":2,"a":[0,2],"exp":"Tầng mạng cung cấp định tuyến (routing) và chuyển tiếp gói tin (forwarding).","notes":null},{"id":20,"q":"Địa chỉ loopback là:","note":null,"opts":["127.0.0.1","192.168.0.1","255.255.255.0","0.0.0.0"],"pick":1,"a":[0],"exp":"127.0.0.1 là địa chỉ loopback của IPv4.","notes":null},{"id":21,"q":"Một router thực hiện những chức năng nào?","note":null,"opts":["Định tuyến","Lọc gói tin","Chuyển tiếp gói tin","Chuyển đổi tên miền"],"pick":3,"a":[0,1,2],"exp":"Router định tuyến, lọc và chuyển tiếp gói tin; việc phân giải tên miền là của DNS.","notes":null},{"id":22,"q":"Ưu điểm của VLAN:","note":null,"opts":["Giảm broadcast domain","Cải thiện bảo mật","Tự động đổi IP","Quản lý linh hoạt"],"pick":3,"a":[0,1,3],"exp":"VLAN chia nhỏ broadcast domain, tăng bảo mật và giúp quản lý linh hoạt; VLAN không tự đổi IP.","notes":null},{"id":23,"q":"Địa chỉ 192.168.1.100/26 có broadcast:","note":null,"opts":["192.168.1.127","192.168.1.63","192.168.1.255","192.168.1.191"],"pick":1,"a":[0],"exp":"/26 có bước nhảy 64: các subnet .0, .64, .128, .192. .100 nằm trong .64–.127 nên broadcast là .127.","notes":null},{"id":24,"q":"Ưu điểm của cáp quang so với cáp đồng:","note":null,"opts":["Băng thông cao","Miễn nhiễu điện từ","Rẻ hơn cáp đồng","Khoảng cách xa hơn"],"pick":3,"a":[0,1,3],"exp":"Cáp quang có băng thông cao, miễn nhiễm nhiễu điện từ và truyền xa hơn cáp đồng, nhưng thường đắt hơn.","notes":null},{"id":25,"q":"Phương pháp điều khiển truy cập đường truyền:","note":null,"opts":["CSMA/CD","Token Ring","DNS lookup","Longest prefix matching"],"pick":2,"a":[0,1],"exp":"CSMA/CD và Token Ring là các phương pháp điều khiển truy cập đường truyền.","notes":{"0":"CSMA/CD — phương pháp truy cập đường truyền của Ethernet cũ.","1":"Token Ring — dùng token luân chuyển giữa các trạm.","2":"DNS lookup — phân giải tên miền, không phải điều khiển truy cập.","3":"Longest prefix matching — kỹ thuật định tuyến, không phải điều khiển truy cập."}},{"id":26,"q":"Các giao thức định tuyến động:","note":null,"opts":["RIP","OSPF","BGP","NAT","ICMP"],"pick":3,"a":[0,1,2],"exp":"RIP, OSPF, BGP là giao thức định tuyến động; NAT và ICMP không phải.","notes":{"0":"RIP — định tuyến distance vector.","1":"OSPF — định tuyến link state.","2":"BGP — định tuyến path vector giữa các AS.","3":"NAT — dịch địa chỉ, không phải giao thức định tuyến.","4":"ICMP — chẩn đoán mạng, không phải định tuyến."}},{"id":27,"q":"Một máy gửi khung Ethernet với MAC đích FF:FF:FF:FF:FF:FF. Khung sẽ:","note":null,"opts":["Chỉ tới một máy","Tới tất cả trong VLAN","Tới tất cả Internet","Tới tất cả router"],"pick":1,"a":[1],"exp":"FF:FF:FF:FF:FF:FF là MAC broadcast, khung được gửi tới mọi thiết bị trong cùng VLAN/broadcast domain.","notes":null},{"id":28,"q":"Muốn chia mạng 10.0.0.0/24 thành 4 subnet bằng nhau, subnet mask mới:","note":null,"opts":["/25","/26","/27","/28"],"pick":1,"a":[1],"exp":"Chia /24 thành 4 subnet cần mượn 2 bit → /26.","notes":null},{"id":29,"q":"Các yếu tố ảnh hưởng throughput:","note":null,"opts":["Độ trễ","Kích thước gói tin","Màu dây cáp","Tốc độ CPU"],"pick":2,"a":[0,1],"exp":"Độ trễ và kích thước gói ảnh hưởng throughput; màu dây cáp và tốc độ CPU không phải yếu tố chính.","notes":null},{"id":30,"q":"ICMP dùng để:","note":null,"opts":["Định tuyến","Chẩn đoán mạng","Cấp phát IP","Chuyển tiếp gói"],"pick":1,"a":[1],"exp":"ICMP dùng cho báo lỗi và chẩn đoán mạng (ping, traceroute).","notes":{"0":"Định tuyến — chức năng của router.","1":"Chẩn đoán mạng — ping/traceroute dùng ICMP.","2":"Cấp phát IP — chức năng của DHCP.","3":"Chuyển tiếp gói — chức năng của router."}},{"id":31,"q":"Trong Ethernet, kích thước tối đa của một frame (MTU) là bao nhiêu byte?","note":null,"opts":["1500","1518","1522","1492"],"pick":1,"a":[0],"exp":"MTU của Ethernet là 1500 byte (phần payload). Toàn bộ frame Ethernet tối đa 1518 byte nếu không tính VLAN tag.","notes":null},{"id":32,"q":"Các giao thức ở tầng vận chuyển của Internet gồm:","note":null,"opts":["TCP","UDP","HTTP","ICMP"],"pick":2,"a":[0,1],"exp":"TCP và UDP là hai giao thức tầng vận chuyển của Internet.","notes":{"0":"TCP — hướng kết nối, tin cậy.","1":"UDP — không kết nối, nhanh, không đảm bảo.","2":"HTTP — giao thức tầng ứng dụng.","3":"ICMP — giao thức tầng mạng, dùng chẩn đoán."}},{"id":33,"q":"Một máy tính kết nối Wi-Fi, sau khi nhập đúng mật khẩu nhưng không truy cập Internet, nguyên nhân có thể là:","note":null,"opts":["DHCP không cấp IP","Sai subnet mask","Lỗi cáp Ethernet","Ping gateway thành công"],"pick":2,"a":[0,1],"exp":"Nhập đúng mật khẩu Wi-Fi nhưng không có Internet thường do DHCP không cấp IP hoặc cấu hình subnet mask sai.","notes":null},{"id":34,"q":"NAT (Network Address Translation) có tác dụng:","note":null,"opts":["Chuyển đổi IP private sang IP public","Tiết kiệm địa chỉ IPv4","Tăng tốc độ truyền dữ liệu","Che giấu cấu trúc mạng nội bộ"],"pick":3,"a":[0,1,3],"exp":"NAT chuyển IP private sang public, tiết kiệm IPv4 và che giấu cấu trúc mạng nội bộ; NAT không làm mạng nhanh hơn.","notes":null},{"id":35,"q":"Trong TCP, cơ chế bắt tay 3 bước dùng để:","note":null,"opts":["Mã hóa dữ liệu","Thiết lập kết nối đáng tin cậy","Cấp phát băng thông","Kiểm tra lỗi"],"pick":1,"a":[1],"exp":"Bắt tay 3 bước TCP thiết lập kết nối tin cậy giữa hai đầu.","notes":null},{"id":36,"q":"Khi ping một host, bạn nhận “Destination Host Unreachable”, điều này có thể do:","note":null,"opts":["Không có route tới host","Firewall chặn ICMP","Host đích đang tắt","DNS lỗi"],"pick":2,"a":[0,2],"exp":"Destination Host Unreachable thường do không có route tới host hoặc host đích đang tắt/không phản hồi ARP.","notes":null},{"id":37,"q":"Các tầng của mô hình TCP/IP gồm:","note":null,"opts":["Application","Transport","Network","Session"],"pick":3,"a":[0,1,2],"exp":"TCP/IP gồm Application, Transport, Network, Network Access; Session là tầng của OSI.","notes":null},{"id":38,"q":"Địa chỉ 172.16.5.1 thuộc lớp nào của IPv4?","note":null,"opts":["Lớp A","Lớp B","Lớp C","Lớp D"],"pick":1,"a":[1],"exp":"172.16.x.x nằm trong dải 128.0.0.0–191.255.255.255, thuộc lớp B.","notes":null},{"id":39,"q":"Khi mạng LAN dùng hub thay vì switch:","note":null,"opts":["Tăng số collision domain","Tất cả cổng chung collision domain","Giảm broadcast domain","Mỗi cổng là 1 collision domain"],"pick":2,"a":[1],"exp":"Hub đưa tất cả cổng vào chung một collision domain, nên không làm tăng số collision domain.","notes":null},{"id":40,"q":"Một gói tin đi qua 3 router, TTL ban đầu 64, TTL khi đến đích là:","note":null,"opts":["61","62","63","64"],"pick":1,"a":[0],"exp":"Mỗi router giảm TTL 1: 64 − 3 = 61.","notes":null},{"id":41,"q":"Ưu điểm của IPv6 so với IPv4:","note":null,"opts":["Không cần NAT","Địa chỉ dài hơn","Bảo mật tích hợp IPsec","Chỉ hỗ trợ multicast"],"pick":3,"a":[0,1,2],"exp":"IPv6 có không gian địa chỉ lớn, hỗ trợ tự cấu hình, tích hợp IPsec và không cần NAT.","notes":null},{"id":42,"q":"Các dạng lỗi được CRC phát hiện:","note":null,"opts":["Lỗi 1 bit","Lỗi chuỗi liên tiếp < r+1 bit","Lỗi do phần mềm","Lỗi tràn bộ nhớ"],"pick":2,"a":[0,1],"exp":"CRC phát hiện lỗi 1 bit và lỗi chuỗi (burst) có độ dài nhỏ hơn r+1 bit.","notes":null},{"id":43,"q":"Một thiết bị phát hiện nhiều ARP reply giả mạo, khả năng bị tấn công:","note":null,"opts":["ARP spoofing","SYN flood","DDoS ICMP","DNS poisoning"],"pick":1,"a":[0],"exp":"Nhiều ARP reply giả mạo là dấu hiệu ARP spoofing/ARP poisoning.","notes":null},{"id":44,"q":"Cáp UTP Cat6 hỗ trợ tốc độ tối đa bao nhiêu?","note":null,"opts":["100 Mbps","1 Gbps","10 Gbps","40 Gbps"],"pick":1,"a":[2],"exp":"Cat6 hỗ trợ tối đa 10 Gbps (10GBASE-T) trong khoảng cách ngắn.","notes":null},{"id":45,"q":"Để giảm broadcast trong mạng lớn, dùng:","note":null,"opts":["VLAN","Router","Hub","Bridge"],"pick":2,"a":[0,1],"exp":"VLAN và router đều giúp giới hạn hoặc giảm broadcast trong mạng lớn.","notes":null},{"id":46,"q":"Địa chỉ IP 192.168.0.129/25 có network address là:","note":null,"opts":["192.168.0.0","192.168.0.128","192.168.0.64","192.168.0.192"],"pick":1,"a":[1],"exp":"192.168.0.129/25 thuộc nửa sau .128–.255, nên network address là 192.168.0.128.","notes":null},{"id":47,"q":"OSPF là giao thức định tuyến loại:","note":null,"opts":["Distance Vector","Link State","Hybrid","Static"],"pick":1,"a":[1],"exp":"OSPF là giao thức định tuyến Link State.","notes":null},{"id":48,"q":"Khi thiết lập TCP connection, cờ trong gói SYN-ACK là:","note":null,"opts":["SYN, ACK","ACK, FIN","SYN, FIN","ACK"],"pick":1,"a":[0],"exp":"Gói SYN-ACK có cả cờ SYN và ACK.","notes":null},{"id":49,"q":"Một host gửi dữ liệu TCP, chưa nhận ACK và timeout, sẽ:","note":null,"opts":["Đóng kết nối","Gửi lại segment","Tăng MSS","Giảm TTL"],"pick":1,"a":[1],"exp":"Nếu không nhận ACK và hết thời gian chờ, TCP gửi lại segment (retransmission).","notes":null},{"id":50,"q":"Để xác thực và mã hóa dữ liệu ở tầng mạng dùng:","note":null,"opts":["SSL/TLS","IPsec","SSH","HTTPS"],"pick":1,"a":[1],"exp":"IPsec bảo mật ở tầng mạng; SSL/TLS, SSH, HTTPS thuộc các tầng trên.","notes":{"0":"SSL/TLS — bảo mật ở tầng vận chuyển/ứng dụng.","1":"IPsec — bảo mật gói IP ở tầng mạng.","2":"SSH — phiên đăng nhập/làm việc an toàn.","3":"HTTPS — HTTP chạy trên TLS."}},{"id":51,"q":"Switch Layer 3 có thể:","note":null,"opts":["Chuyển tiếp ở tầng liên kết dữ liệu","Định tuyến IP","Chỉ hoạt động ở L2","Không hỗ trợ VLAN"],"pick":2,"a":[0,1],"exp":"Switch Layer 3 vừa chuyển mạch ở tầng 2 vừa định tuyến IP ở tầng 3.","notes":null},{"id":52,"q":"Khi traceroute, mỗi hop giảm TTL để:","note":null,"opts":["Giới hạn vòng lặp","Xác thực router","Tăng tốc truyền","Chia nhỏ gói"],"pick":1,"a":[0],"exp":"TTL giới hạn số hop để tránh gói tin quay vòng vô hạn.","notes":null},{"id":53,"q":"Trong mạng không dây, chuẩn 802.11ac hoạt động ở băng tần:","note":null,"opts":["2.4 GHz","5 GHz","6 GHz","900 MHz"],"pick":2,"a":[1],"exp":"802.11ac chỉ hoạt động ở băng tần 5 GHz.","notes":null},{"id":54,"q":"Các thiết bị thuộc lớp 1 OSI:","note":null,"opts":["Hub","Repeater","Switch","Router"],"pick":2,"a":[0,1],"exp":"Hub và repeater là thiết bị tầng 1 (vật lý).","notes":null},{"id":55,"q":"IPv4 private address theo RFC1918 gồm:","note":null,"opts":["10.0.0.0/8","172.16.0.0/12","192.168.0.0/16","169.254.0.0/16"],"pick":3,"a":[0,1,2],"exp":"RFC1918 quy định 10.0.0.0/8, 172.16.0.0/12 và 192.168.0.0/16 là private; 169.254.0.0/16 là link-local.","notes":null},{"id":56,"q":"Muốn tính số host usable từ subnet mask, công thức:","note":null,"opts":["2^n","2^n - 2","2^n + 2","2^n - 1"],"pick":1,"a":[1],"exp":"Số host usable = 2^n − 2 (trừ network và broadcast).","notes":null},{"id":57,"q":"Trong mô hình OSI, tầng nào gắn địa chỉ MAC vào frame?","note":null,"opts":["Network","Data Link","Transport","Application"],"pick":1,"a":[1],"exp":"Tầng liên kết dữ liệu gắn địa chỉ MAC vào frame.","notes":null},{"id":58,"q":"Ưu điểm của cáp quang multimode:","note":null,"opts":["Giá rẻ hơn singlemode","Khoảng cách truyền xa hơn singlemode","Lắp đặt dễ hơn","Hỗ trợ tốc độ cao hơn singlemode"],"pick":2,"a":[0,2],"exp":"Multimode rẻ hơn và dễ lắp đặt hơn singlemode, nhưng không truyền xa bằng.","notes":null},{"id":59,"q":"Khi TCP nhận nhiều ACK trùng lặp, sẽ:","note":null,"opts":["Fast retransmit","Slow start","Timeout","Đóng kết nối"],"pick":1,"a":[0],"exp":"Nhiều ACK trùng lặp kích hoạt fast retransmit trước khi timeout.","notes":null},{"id":60,"q":"DHCP cung cấp thông tin gì?","note":null,"opts":["IP address","Subnet mask","Default gateway","DNS server"],"pick":3,"a":[0,1,2],"exp":"DHCP cấp IP, subnet mask và default gateway (thường cả DNS server). Đề yêu cầu chọn 3 nên đáp án là A, B, C; trên thực tế D cũng đúng.","notes":null},{"id":61,"q":"Một mạng 192.168.1.0/24, muốn chia 8 subnet, subnet mask mới:","note":null,"opts":["/27","/28","/29","/26"],"pick":1,"a":[0],"exp":"Chia /24 thành 8 subnet cần mượn 3 bit → /27.","notes":null},{"id":62,"q":"Giao thức nào hỗ trợ gửi mail?","note":null,"opts":["SMTP","IMAP","FTP","POP3"],"pick":2,"a":[0],"exp":"Chỉ SMTP dùng để gửi email. IMAP/POP3 dùng để nhận email, FTP dùng truyền tệp — nên đề ghi “chọn 2” nhưng thực tế chỉ có A đúng.","notes":{"0":"Gửi email từ client lên mail server hoặc giữa các mail server.","1":"Nhận và đồng bộ email từ mail server.","2":"Truyền tệp tin.","3":"Tải email từ mail server về thiết bị để đọc."}},{"id":63,"q":"Để đảm bảo dữ liệu không bị thay đổi khi truyền, dùng:","note":null,"opts":["Hash + chữ ký số","CRC32","Cả A và B","Không thể"],"pick":1,"a":[2],"exp":"Cả CRC32 (phát hiện lỗi ngẫu nhiên) và hash + chữ ký số (kiểm tra toàn vẹn, xác thực nguồn gốc) đều là cơ chế kiểm tra dữ liệu. Theo đáp án của đề, chọn C.\nLưu ý: CRC32 không chống được sửa đổi có chủ đích; muốn chống giả mạo cần hash + chữ ký số.","notes":null},{"id":64,"q":"Phát hiện lỗi ở tầng vận chuyển TCP dựa trên:","note":null,"opts":["CRC","Checksum","Hash","IPsec"],"pick":1,"a":[1],"exp":"TCP phát hiện lỗi bằng checksum trong header.","notes":null},{"id":65,"q":"Một mạng 172.16.0.0/16 muốn 510 host/subnet, subnet mask là:","note":null,"opts":["/24","/23","/25","/22"],"pick":1,"a":[1],"exp":"Cần 510 host usable → 2^9 − 2 = 510 → mượn 9 bit host, subnet mask /23.","notes":null},{"id":66,"q":"Chức năng của ARP:","note":null,"opts":["IP → MAC","MAC → IP","DNS → IP","IP → DNS"],"pick":1,"a":[0],"exp":"ARP phân giải địa chỉ IP thành địa chỉ MAC.","notes":null},{"id":67,"q":"VLAN trunk dùng giao thức:","note":null,"opts":["802.1Q","ISL","STP","RSTP"],"pick":2,"a":[0,1],"exp":"802.1Q và ISL là các giao thức trunk VLAN phổ biến.","notes":{"0":"802.1Q — chuẩn trunk VLAN phổ biến, chèn tag 4 byte vào frame.","1":"ISL — giao thức trunk VLAN độc quyền của Cisco.","2":"STP — chống loop tầng 2, không phải trunk.","3":"RSTP — STP cải tiến, chống loop."}},{"id":68,"q":"Ping trả “Request timed out” có thể do:","note":null,"opts":["Host down","Mạng đứt","Firewall chặn ICMP","DNS lỗi"],"pick":3,"a":[0,1,2],"exp":"Request timed out có thể do host tắt, mạng đứt hoặc firewall chặn ICMP.","notes":null},{"id":69,"q":"Địa chỉ 224.0.0.1 thuộc loại:","note":null,"opts":["Unicast","Broadcast","Multicast","Anycast"],"pick":1,"a":[2],"exp":"224.0.0.1 là địa chỉ multicast (all-hosts).","notes":null},{"id":70,"q":"Trong mạng, broadcast domain bị giới hạn bởi:","note":null,"opts":["Switch","Hub","Router","Bridge"],"pick":1,"a":[2],"exp":"Router giới hạn broadcast domain; switch/hub chỉ giới hạn collision domain.","notes":null},{"id":71,"q":"Các bước bắt tay 3 bước TCP gồm:","note":null,"opts":["SYN","SYN-ACK","ACK","FIN"],"pick":3,"a":[0,1,2],"exp":"Bắt tay TCP gồm SYN → SYN-ACK → ACK.","notes":null},{"id":72,"q":"Số lượng host usable của /30 là:","note":null,"opts":["2","4","6","8"],"pick":1,"a":[0],"exp":"/30 có 2 bit host → 2^2 − 2 = 2 host usable.","notes":null},{"id":73,"q":"Khi mạng bị loop L2, hậu quả:","note":null,"opts":["Bão broadcast","Mất kết nối","Mất IP","Tăng băng thông"],"pick":2,"a":[0,1],"exp":"Loop tầng 2 gây bão broadcast và làm mất kết nối mạng.","notes":null},{"id":74,"q":"STP dùng để:","note":null,"opts":["Chống loop L2","Chống loop L3","Chia VLAN","Gán IP"],"pick":1,"a":[0],"exp":"STP (Spanning Tree Protocol) chống loop ở tầng 2.","notes":null},{"id":75,"q":"Một gói TCP có cờ FIN nghĩa là:","note":null,"opts":["Yêu cầu thiết lập kết nối","Yêu cầu kết thúc kết nối","Lỗi","Reset"],"pick":1,"a":[1],"exp":"Cờ FIN dùng để kết thúc kết nối TCP.","notes":null},{"id":76,"q":"Protocol HTTPS hoạt động trên port mặc định:","note":null,"opts":["80","443","22","25"],"pick":1,"a":[1],"exp":"HTTPS mặc định dùng cổng 443.","notes":{"0":"80 — HTTP.","1":"443 — HTTPS (HTTP + TLS).","2":"22 — SSH.","3":"25 — SMTP."}},{"id":77,"q":"Địa chỉ IP 10.10.8.5/21 có network address là:","note":null,"opts":["10.10.8.0","10.10.0.0","10.10.4.0","10.10.12.0"],"pick":1,"a":[0],"exp":"10.10.8.5/21 có block 8 ở octet thứ ba (0, 8, 16...), nên network address là 10.10.8.0.","notes":null},{"id":78,"q":"Giao thức FTP dùng port:","note":null,"opts":["20","21","22","23"],"pick":2,"a":[0,1],"exp":"FTP dùng cổng 20 (data) và 21 (control).","notes":{"0":"20 — kênh dữ liệu FTP ở active mode.","1":"21 — kênh điều khiển FTP.","2":"22 — SSH.","3":"23 — Telnet."}},{"id":79,"q":"Một máy tính nhận IP 169.254.x.x nghĩa là:","note":null,"opts":["IP private","APIPA do không nhận DHCP","Loopback","Public"],"pick":1,"a":[1],"exp":"169.254.x.x là APIPA, được cấp khi máy không nhận được DHCP.","notes":null},{"id":80,"q":"Khi cáp Ethernet đứt một sợi trong cặp xoắn, có thể gây:","note":null,"opts":["Mất kết nối hoàn toàn","Giảm tốc độ","Tăng băng thông","Sai CRC"],"pick":2,"a":[1,3],"exp":"Đứt một sợi trong cặp xoắn có thể làm giảm tốc độ (link vẫn đồng bộ) và gây lỗi CRC/FCS. Mất kết nối hoàn toàn chỉ xảy ra khi link không thể đồng bộ.","notes":null},{"id":81,"q":"SMTP thuộc tầng nào OSI?","note":null,"opts":["Ứng dụng","Vận chuyển","Mạng","Liên kết dữ liệu"],"pick":1,"a":[0],"exp":"SMTP là giao thức tầng ứng dụng.","notes":null},{"id":82,"q":"Một gói IP có DF=1 nghĩa là:","note":null,"opts":["Không được phân mảnh","Được phân mảnh","Gói cuối cùng","Gói đầu tiên"],"pick":1,"a":[0],"exp":"DF=1 nghĩa là Don't Fragment – không cho phép phân mảnh gói.","notes":null},{"id":83,"q":"Địa chỉ 255.255.255.255 là:","note":null,"opts":["Broadcast giới hạn","Broadcast hướng tới tất cả Internet","Multicast","Loopback"],"pick":1,"a":[0],"exp":"255.255.255.255 là địa chỉ broadcast giới hạn (limited broadcast).","notes":null},{"id":84,"q":"Cáp đồng trục dùng trong:","note":null,"opts":["Truyền hình cáp","10BASE2","100BASE-T","Fiber Channel"],"pick":2,"a":[0,1],"exp":"Cáp đồng trục được dùng cho truyền hình cáp và chuẩn Ethernet 10BASE2.","notes":null},{"id":85,"q":"Phát hiện lỗi trong Ethernet frame dựa vào:","note":null,"opts":["FCS","CRC32","Cả A và B","MD5"],"pick":1,"a":[2],"exp":"Ethernet dùng FCS, thường là CRC32, để phát hiện lỗi frame.","notes":null},{"id":86,"q":"DHCP hoạt động trên port UDP:","note":null,"opts":["67","68","69","53"],"pick":2,"a":[0,1],"exp":"DHCP server dùng UDP 67, client dùng UDP 68.","notes":{"0":"67 — DHCP server.","1":"68 — DHCP client.","2":"69 — TFTP.","3":"53 — DNS."}},{"id":87,"q":"Một máy tính gửi ARP request, MAC đích sẽ là:","note":null,"opts":["FF:FF:FF:FF:FF:FF","00:00:00:00:00:00","MAC router","MAC switch"],"pick":1,"a":[0],"exp":"ARP request được gửi broadcast với MAC đích FF:FF:FF:FF:FF:FF.","notes":null},{"id":88,"q":"ICMP type 8 code 0 nghĩa là:","note":null,"opts":["Echo request","Echo reply","Time exceeded","Destination unreachable"],"pick":1,"a":[0],"exp":"ICMP type 8 code 0 là Echo Request (ping).","notes":null},{"id":89,"q":"Số host usable của /29 là:","note":null,"opts":["6","8","14","30"],"pick":1,"a":[0],"exp":"/29 có 3 bit host → 2^3 − 2 = 6 host usable.","notes":null},{"id":90,"q":"Port mặc định của DNS:","note":null,"opts":["53","80","110","25"],"pick":1,"a":[0],"exp":"DNS dùng cổng 53.","notes":{"0":"53 — DNS.","1":"80 — HTTP.","2":"110 — POP3.","3":"25 — SMTP."}},{"id":91,"q":"Địa chỉ IP 192.168.1.1/25 có broadcast:","note":null,"opts":["192.168.1.127","192.168.1.255","192.168.1.63","192.168.1.191"],"pick":1,"a":[0],"exp":"192.168.1.1/25 thuộc dải .0–.127 nên broadcast là 192.168.1.127.","notes":null},{"id":92,"q":"Một mạng 192.168.0.0/24 cần 100 host, subnet mask phù hợp:","note":null,"opts":["/25","/26","/27","/28"],"pick":1,"a":[0],"exp":"Cần 100 host → /25 cho 126 host usable, phù hợp nhất.","notes":null},{"id":93,"q":"Giao thức nào gửi email từ client lên server?","note":null,"opts":["SMTP","IMAP","POP3","HTTP"],"pick":1,"a":[0],"exp":"SMTP là giao thức gửi email. IMAP/POP3 chỉ nhận email; HTTP dùng tải web.","notes":{"0":"SMTP — gửi email từ client lên mail server hoặc giữa các mail server.","1":"IMAP — nhận và đồng bộ email từ mail server.","2":"POP3 — tải email từ mail server về thiết bị để đọc.","3":"HTTP — tải trang web, không dùng gửi email."}},{"id":94,"q":"Một switch cấu hình STP root bridge sẽ có:","note":null,"opts":["Priority thấp nhất","Priority cao nhất","MAC cao nhất","MAC thấp nhất"],"pick":1,"a":[0],"exp":"Root bridge có Bridge ID thấp nhất, tức priority thấp nhất (sau đó so MAC thấp nhất).","notes":null},{"id":95,"q":"Trong FTP active mode, data channel dùng port:","note":null,"opts":["20","21","22","23"],"pick":1,"a":[0],"exp":"FTP active mode dùng cổng 20 cho kênh dữ liệu.","notes":null},{"id":96,"q":"Ưu điểm của IPv6:","note":null,"opts":["Hỗ trợ auto-configuration","Không cần ARP","Sử dụng ICMPv6 cho neighbor discovery","Sử dụng NAT bắt buộc"],"pick":3,"a":[0,1,2],"exp":"IPv6 hỗ trợ auto-configuration, không dùng ARP mà dùng NDP/ICMPv6; NAT không bắt buộc.","notes":null},{"id":97,"q":"Một gói UDP không nhận ACK, hành động tiếp theo:","note":null,"opts":["Gửi lại gói","Bỏ qua","Đóng kết nối","Tăng timeout"],"pick":1,"a":[1],"exp":"UDP không có ACK/retransmission nên gói mất sẽ bị bỏ qua.","notes":null},{"id":98,"q":"Cáp quang singlemode thường dùng cho:","note":null,"opts":["Khoảng cách xa","Băng thông cao","Giá rẻ","Truyền trong văn phòng nhỏ"],"pick":2,"a":[0,1],"exp":"Singlemode dùng cho khoảng cách xa và băng thông cao.","notes":null},{"id":99,"q":"Chức năng của switch so với hub:","note":null,"opts":["Giảm collision","Mỗi cổng là 1 collision domain","Chuyển tiếp broadcast","Không học MAC"],"pick":2,"a":[0,1],"exp":"Switch giảm collision và tách mỗi cổng thành một collision domain.","notes":null},{"id":100,"q":"Subnet mask /23 cho phép bao nhiêu host usable?","note":null,"opts":["510","512","254","256"],"pick":1,"a":[0],"exp":"/23 có 9 bit host → 2^9 − 2 = 510 host usable.","notes":null},{"id":101,"q":"Một máy tính kết nối Wi-Fi thành công, có IP 169.254.12.5/16, gateway 169.254.0.1, nhưng không truy cập Internet. Nguyên nhân khả dĩ nhất là:","note":null,"opts":["DHCP server không hoạt động","DNS lỗi","Router chặn ICMP","NAT lỗi"],"pick":1,"a":[0],"exp":"IP 169.254.x.x là APIPA, cho thấy DHCP server không cấp được IP.","notes":null},{"id":102,"q":"Một máy tính trong LAN có thể ping 8.8.8.8 nhưng không truy cập được google.com. Nguyên nhân có thể là:","note":null,"opts":["DHCP lỗi","DNS không phân giải tên miền","Default gateway sai","Subnet mask sai"],"pick":1,"a":[1],"exp":"Ping IP được nhưng không vào được tên miền → DNS không phân giải được.","notes":null},{"id":103,"q":"Trong một hệ thống mạng, khi gửi file lớn qua FTP, tốc độ truyền giảm mạnh sau vài giây. Phân tích gói tin cho thấy TCP window size giảm dần. Nguyên nhân có thể là:","note":null,"opts":["Cơ chế TCP flow control kích hoạt","DNS lỗi","IP bị trùng","NAT bị đầy"],"pick":1,"a":[0],"exp":"TCP window giảm dần là dấu hiệu flow control của TCP.","notes":null},{"id":104,"q":"Một router có 2 đường ra Internet, một qua ISP1 (metric 10) và một qua ISP2 (metric 20). Khi ISP1 bị đứt, mạng vẫn truy cập Internet bình thường. Cơ chế nào giúp điều này?","note":null,"opts":["Static route","Dynamic routing với route backup","ARP cache","ICMP redirect"],"pick":1,"a":[1],"exp":"Định tuyến động có route dự phòng giúp chuyển tuyến khi ISP1 đứt.","notes":null},{"id":105,"q":"Máy chủ web được đặt sau firewall. Người ngoài mạng không truy cập được, nhưng từ nội bộ truy cập bình thường. Nguyên nhân có thể là:","note":null,"opts":["Firewall chưa mở port 80/443 từ ngoài vào","NAT chưa bật","DNS lỗi nội bộ","Switch lỗi port"],"pick":1,"a":[0],"exp":"Firewall chưa mở inbound 80/443 nên bên ngoài không vào được, nội bộ vẫn truy cập được.","notes":null},{"id":106,"q":"Một kỹ thuật viên thấy đèn port switch chớp liên tục bất thường, CPU switch tăng cao, toàn mạng chậm. Đây có thể là dấu hiệu của:","note":null,"opts":["Broadcast storm","Router loop","ARP timeout","DHCP starvation"],"pick":1,"a":[0],"exp":"Đèn chớp liên tục, CPU cao và mạng chậm là dấu hiệu broadcast storm.","notes":null},{"id":107,"q":"Trong mạng không dây, khi có nhiều thiết bị kết nối, tốc độ truy cập giảm đáng kể. Phân tích cho thấy nhiều gói bị retransmit. Nguyên nhân có thể là:","note":null,"opts":["Nhiễu sóng hoặc khoảng cách xa AP","DHCP lease time ngắn","Sai subnet mask","IP trùng"],"pick":1,"a":[0],"exp":"Nhiễu sóng và khoảng cách xa AP gây retransmit, làm giảm tốc độ Wi-Fi.","notes":null},{"id":108,"q":"Một công ty triển khai VoIP. Khi gọi điện, âm thanh bị gián đoạn. Ping và throughput bình thường. Nguyên nhân khả dĩ nhất là:","note":null,"opts":["Độ trễ và jitter cao","DNS lỗi","Subnet mask sai","NAT overload"],"pick":1,"a":[0],"exp":"VoIP nhạy cảm với độ trễ và jitter; throughput/ping trung bình có thể vẫn bình thường.","notes":null},{"id":109,"q":"Trong hệ thống video streaming, khi server dùng UDP thay vì TCP, hình ảnh mượt hơn nhưng đôi lúc mất frame. Nguyên nhân là:","note":null,"opts":["UDP không đảm bảo độ tin cậy","UDP bị nghẽn","MTU mismatch","TTL giảm"],"pick":1,"a":[0],"exp":"UDP không đảm bảo độ tin cậy nên có thể mất frame, nhưng ít trễ hơn TCP.","notes":null},{"id":110,"q":"Một gói IP từ máy A đến máy B đi qua nhiều router. Router thứ 3 gửi ICMP “Time Exceeded” về A. Nguyên nhân là:","note":null,"opts":["TTL gói tin về 0 tại router thứ 3","Sai subnet mask","IP đích không tồn tại","NAT lỗi"],"pick":1,"a":[0],"exp":"Router thứ 3 thấy TTL về 0 nên gửi ICMP Time Exceeded.","notes":null},{"id":111,"q":"Trong mạng doanh nghiệp, nhiều người báo tốc độ truy cập Internet chậm khi tải file lớn. Giám sát cho thấy băng thông WAN đạt 100%. Giải pháp nào hợp lý nhất?","note":null,"opts":["Triển khai QoS ưu tiên lưu lượng quan trọng","Giảm DHCP lease time","Tăng TTL","Chia subnet nhỏ hơn"],"pick":1,"a":[0],"exp":"WAN đạt 100% băng thông → dùng QoS để ưu tiên lưu lượng quan trọng.","notes":null},{"id":112,"q":"Khi chạy lệnh `traceroute`, thấy tất cả hop trả về dấu “* * *”. Nguyên nhân có thể là:","note":null,"opts":["Router chặn ICMP Time Exceeded","DNS lỗi","DHCP lỗi","Subnet mask sai"],"pick":1,"a":[0],"exp":"Các router trên đường đi chặn ICMP Time Exceeded nên traceroute chỉ thấy * * *.","notes":null},{"id":113,"q":"Một server có IP tĩnh, gateway đúng, subnet mask đúng nhưng không thể liên lạc với mạng ngoài. Ping ra gateway ok, ping 8.8.8.8 không được. Nguyên nhân:","note":null,"opts":["Router không có default route ra Internet","DNS lỗi","MTU mismatch","Link cáp hỏng"],"pick":1,"a":[0],"exp":"Ping được gateway nhưng không ra Internet → router thiếu default route ra Internet.","notes":null},{"id":114,"q":"Khi dùng Wireshark phân tích kết nối TCP, thấy gói SYN gửi đi nhưng không có SYN-ACK trả về. Nguyên nhân khả dĩ nhất:","note":null,"opts":["Port server bị chặn bởi firewall","Sai subnet mask","NAT lỗi","DNS lỗi"],"pick":1,"a":[0],"exp":"SYN gửi đi nhưng không có SYN-ACK thường do firewall chặn cổng server.","notes":null},{"id":115,"q":"Một nhân viên truy cập dịch vụ nội bộ qua hostname `intranet.local` bị lỗi, nhưng truy cập bằng IP thì được. Nguyên nhân:","note":null,"opts":["DNS nội bộ không phân giải được tên","NAT lỗi","Sai subnet mask","Firewall chặn"],"pick":1,"a":[0],"exp":"Truy cập bằng IP được nhưng hostname lỗi → DNS nội bộ không phân giải.","notes":null},{"id":116,"q":"Khi gửi email kèm tệp lớn, mất nhiều thời gian mới gửi xong. Kiểm tra thấy ứng dụng dùng SMTP qua TCP. Nguyên nhân tốc độ chậm là:","note":null,"opts":["TCP thực hiện cơ chế congestion control","MTU nhỏ","TTL thấp","DNS chậm"],"pick":1,"a":[0],"exp":"TCP congestion control giảm tốc khi phát hiện mất gói/tắc nghẽn, làm gửi file lớn chậm.","notes":null},{"id":117,"q":"Một máy tính nhận IP đúng, ping Internet được nhưng không truy cập được web HTTPS. Nguyên nhân:","note":null,"opts":["Port 443 bị chặn","DNS lỗi","TTL hết","Subnet mask sai"],"pick":1,"a":[0],"exp":"Ping được nhưng HTTPS không được → cổng 443 bị chặn.","notes":null},{"id":118,"q":"Trong mạng có nhiều subnet, khi router không có route đến subnet đích, gói tin sẽ:","note":null,"opts":["Bị drop","Gửi về default gateway","Gửi broadcast tìm đường","Chuyển qua cổng dự phòng"],"pick":1,"a":[0],"exp":"Không có route tới subnet đích thì router drop gói tin.","notes":null},{"id":119,"q":"Khi cấu hình NAT overload (PAT), nhiều người dùng truy cập Internet qua cùng một IP public. Nếu bảng NAT đầy, hậu quả là:","note":null,"opts":["Kết nối mới bị từ chối","Kết nối cũ bị reset","Mạng LAN bị loop","Router tự khởi động lại"],"pick":1,"a":[0],"exp":"Bảng NAT đầy thì các kết nối mới bị từ chối.","notes":null},{"id":120,"q":"Một kỹ sư mạng phát hiện số lượng gói ARP broadcast tăng bất thường và CPU router tăng cao. Đây có thể là dấu hiệu của:","note":null,"opts":["ARP spoofing/tấn công giả mạo ARP","DNS poisoning","DHCP starvation","Port scanning"],"pick":1,"a":[0],"exp":"ARP broadcast tăng bất thường kèm CPU router cao là dấu hiệu ARP spoofing/ARP flood.","notes":null},{"id":121,"q":"Các kỹ thuật Multiplexing phổ biến trong mạng viễn thông là gì?","note":null,"opts":["Frequency Division Multiplexing (FDM)","Time Division Multiplexing (TDM)","Wavelength Division Multiplexing (WDM)","Queue Division Multiplexing (QDM)"],"pick":3,"a":[0,1,2],"exp":"FDM, TDM, WDM là các kỹ thuật ghép kênh phổ biến; QDM không tồn tại.","notes":{"0":"FDM — ghép kênh theo tần số.","1":"TDM — ghép kênh theo thời gian.","2":"WDM — ghép kênh theo bước sóng (cáp quang).","3":"QDM — không phải kỹ thuật ghép kênh chuẩn."}},{"id":122,"q":"Trong TDM, các yếu tố nào ảnh hưởng đến hiệu suất truyền dữ liệu?","note":null,"opts":["Độ dài khe thời gian (time slot)","Số lượng kênh truyền","Địa chỉ MAC","Dung lượng DNS cache"],"pick":2,"a":[0,1],"exp":"Độ dài time slot và số kênh truyền ảnh hưởng hiệu suất TDM.","notes":null},{"id":123,"q":"Những loại tấn công nào sau đây thường nhằm đánh cắp dữ liệu trên đường truyền?","note":null,"opts":["Packet Sniffing","Man-in-the-Middle","SYN Flood","Brute Force mật khẩu"],"pick":2,"a":[0,1],"exp":"Packet Sniffing và MITM nhằm đánh cắp dữ liệu trên đường truyền; SYN Flood là tấn công DoS, Brute Force là đoán mật khẩu.","notes":{"0":"Packet Sniffing — bắt gói tin trên đường truyền.","1":"Man-in-the-Middle — chen giữa hai bên để đọc/sửa dữ liệu.","2":"SYN Flood — tấn công DoS, không đánh cắp dữ liệu.","3":"Brute Force — đoán mật khẩu, không phải nghe lén."}},{"id":124,"q":"Các hình thức tấn công DoS/DDoS phổ biến bao gồm:","note":null,"opts":["SYN Flood","UDP Flood","HTTP GET Flood","DNS Resolver Cache Poisoning"],"pick":3,"a":[0,1,2],"exp":"SYN Flood, UDP Flood và HTTP GET Flood là các hình thức DoS/DDoS; DNS Cache Poisoning là tấn công đầu độc cache DNS, không phải DoS trực tiếp.","notes":{"0":"SYN Flood — làm cạn tài nguyên kết nối.","1":"UDP Flood — bắn lượng lớn gói UDP.","2":"HTTP GET Flood — gửi nhiều request HTTP.","3":"DNS Cache Poisoning — đầu độc cache DNS, không phải DoS."}},{"id":125,"q":"Những kỹ thuật nào kẻ tấn công dùng để giả mạo danh tính trên Internet?","note":null,"opts":["IP Spoofing","ARP Spoofing","Time Division Multiplexing","FDM"],"pick":2,"a":[0,1],"exp":"IP Spoofing và ARP Spoofing là kỹ thuật giả mạo danh tính; TDM/FDM là kỹ thuật ghép kênh.","notes":{"0":"IP Spoofing — giả địa chỉ IP nguồn.","1":"ARP Spoofing — giả MAC trong mạng LAN.","2":"TDM — ghép kênh theo thời gian.","3":"FDM — ghép kênh theo tần số."}}];
+
+const byId = new Map(QUESTIONS.map(q => [q.id, q]));
+const STORAGE_KEY = "mmt-quiz-state-v1";
+const THEME_KEY = "mmt-quiz-theme";
+const ALL_IDS = QUESTIONS.map(q => q.id);
+const AUTO_ADVANCE_MS = 5000;
+
+let state = null;
+let selectedMode = "quiz";
+let timerId = null;
+let toastTimer = null;
+let advanceTimer = null;
+let modalResolver = null;
+let reviewFilter = "all";
+
+/* ---------- Helpers ---------- */
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function fmt(s) {
+  return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+}
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function sameSet(a, b) {
+  if (!Array.isArray(a) || a.length !== b.length) return false;
+  return b.every(x => a.includes(x));
+}
+function formatTime(ms) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const mm = String(m).padStart(2, "0");
+  const ss = String(s).padStart(2, "0");
+  return h ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+function elapsedMs() {
+  if (!state) return 0;
+  return state.timeBase + (state.runSince ? Date.now() - state.runSince : 0);
+}
+function currentQ() {
+  return byId.get(state.order[state.idx]);
+}
+function displayLetter(qid, origIdx) {
+  const pos = state.optsOrder[qid].indexOf(origIdx);
+  return pos >= 0 ? String.fromCharCode(65 + pos) : "?";
+}
+function displayLetters(qid, arr) {
+  if (!arr || !arr.length) return "—";
+  return arr.map(i => displayLetter(qid, i)).sort().join(", ");
+}
+function optNotesHtml(q) {
+  if (!q.notes) return "";
+  const rows = state.optsOrder[q.id]
+    .filter(orig => q.notes[orig])
+    .map(orig => `<div class="opt-note"><b>${displayLetter(q.id, orig)}.</b> ${fmt(q.notes[orig])}</div>`);
+  return rows.length ? `<div class="opt-notes">${rows.join("")}</div>` : "";
+}
+function modeLabel(mode) {
+  return mode === "practice" ? "Luyện tập" : mode === "exam" ? "Thi thử" : "Quiz nhanh";
+}
+function showScreen(name) {
+  const map = { start: "startScreen", quiz: "quizScreen", result: "resultScreen" };
+  Object.values(map).forEach(id => $("#" + id).classList.toggle("hidden", id !== map[name]));
+}
+function clearAdvance() {
+  if (advanceTimer) { clearTimeout(advanceTimer); advanceTimer = null; }
+}
+function scheduleAdvance(delay) {
+  clearAdvance();
+  if (!state || state.finished || state.mode !== "quiz") return;
+  if (state.idx >= state.order.length - 1) return;
+  advanceTimer = setTimeout(() => {
+    advanceTimer = null;
+    if (!state || state.finished || state.mode !== "quiz") return;
+    if (state.idx < state.order.length - 1) nextQuestion();
+  }, delay);
+}
+function toast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2300);
+}
+
+/* ---------- Persistence ---------- */
+function validState(s) {
+  return !!(s && s.v === 1 && s.mode && Array.isArray(s.order) && s.order.length > 0
+    && s.order.every(id => byId.has(id)) && s.optsOrder && typeof s.optsOrder === "object"
+    && s.answers && typeof s.answers === "object");
+}
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw);
+    if (!validState(s)) { localStorage.removeItem(STORAGE_KEY); return null; }
+    return s;
+  } catch (e) { return null; }
+}
+function saveState() {
+  if (!state) return;
+  try {
+    if (!state.finished) {
+      state.timeBase = elapsedMs();
+      state.runSince = Date.now();
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { /* ignore */ }
+}
+function answeredCount(s) {
+  return s.order.filter(id => (s.answers[id] || []).length > 0).length;
+}
+function clampCount(raw) {
+  const n = Math.floor(Number(raw));
+  if (!Number.isFinite(n)) return 1;
+  return Math.min(QUESTIONS.length, Math.max(1, n));
+}
+function syncCountUI(n) {
+  $("#countHint").textContent = n >= QUESTIONS.length ? `Tất cả ${QUESTIONS.length} câu` : `${n} câu`;
+  $$("#countPresets .preset").forEach(b => b.classList.toggle("active", Number(b.dataset.count) === n));
+}
+function readCount() {
+  const input = $("#qCount");
+  const n = clampCount(input.value);
+  input.value = n;
+  syncCountUI(n);
+  return n;
+}
+function buildQuizIds(count, shuffleQuestions) {
+  const pool = ALL_IDS.slice();
+  if (shuffleQuestions) shuffle(pool);
+  return pool.slice(0, clampCount(count));
+}
+function stepCount(delta) {
+  const input = $("#qCount");
+  input.value = Math.min(QUESTIONS.length, Math.max(1, clampCount(input.value) + delta));
+  syncCountUI(Number(input.value));
+}
+function correctCount(s) {
+  return s.order.filter(id => sameSet(s.answers[id] || [], byId.get(id).a)).length;
+}
+
+/* ---------- Theme ---------- */
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+  $$(".theme-toggle").forEach(btn => {
+    btn.textContent = theme === "dark" ? "☀️" : "🌙";
+  });
+}
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch (e) {}
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(saved || (prefersDark ? "dark" : "light"));
+})();
+$$(".theme-toggle").forEach(btn => btn.addEventListener("click", () => {
+  applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+}));
+
+/* ---------- Modal ---------- */
+function confirmModal(opts) {
+  return new Promise(resolve => {
+    modalResolver = resolve;
+    $("#modalTitle").textContent = opts.title || "Xác nhận";
+    $("#modalText").textContent = opts.text || "";
+    const ok = $("#modalOk");
+    ok.textContent = opts.okText || "Đồng ý";
+    ok.className = "btn " + (opts.danger ? "btn-danger" : "btn-primary");
+    $("#modalCancel").textContent = opts.cancelText || "Hủy";
+    $("#modal").classList.remove("hidden");
+    setTimeout(() => ok.focus(), 0);
+  });
+}
+function closeModal(value) {
+  $("#modal").classList.add("hidden");
+  if (modalResolver) {
+    const r = modalResolver;
+    modalResolver = null;
+    r(value);
+  }
+}
+$("#modalOk").addEventListener("click", () => closeModal(true));
+$("#modalCancel").addEventListener("click", () => closeModal(false));
+$("#modal").addEventListener("click", (e) => { if (e.target === $("#modal")) closeModal(false); });
+
+/* ---------- Quiz lifecycle ---------- */
+function makeOptsOrder(shuffleOptions) {
+  const out = {};
+  for (const q of QUESTIONS) {
+    const arr = q.opts.map((_, i) => i);
+    out[q.id] = shuffleOptions ? shuffle(arr) : arr;
+  }
+  return out;
+}
+function startQuiz(mode, shuffleQuestions, shuffleOptions, ids) {
+  clearAdvance();
+  const order = (ids && ids.length ? ids.slice() : ALL_IDS.slice());
+  if (shuffleQuestions) shuffle(order);
+  state = {
+    v: 1,
+    mode,
+    shuffleQ: !!shuffleQuestions,
+    shuffleO: !!shuffleOptions,
+    order,
+    optsOrder: makeOptsOrder(shuffleOptions),
+    answers: {},
+    checked: {},
+    idx: 0,
+    timeBase: 0,
+    runSince: Date.now(),
+    finished: false,
+    submittedAt: null
+  };
+  selectedMode = mode;
+  $("#modeChip").textContent = modeLabel(mode);
+  showScreen("quiz");
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  startTimer();
+  saveState();
+  renderAll();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function resumeQuiz(saved) {
+  state = saved;
+  state.runSince = state.finished ? null : Date.now();
+  selectedMode = state.mode;
+  $("#modeChip").textContent = modeLabel(state.mode);
+  if (state.finished) {
+    showScreen("result");
+    renderResults();
+  } else {
+    showScreen("quiz");
+    startTimer();
+    renderAll();
+  }
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function startTimer() {
+  stopTimer();
+  if (!state || state.finished) return;
+  updateTimer();
+  timerId = setInterval(updateTimer, 1000);
+}
+function stopTimer() {
+  if (timerId) { clearInterval(timerId); timerId = null; }
+}
+function updateTimer() {
+  const el = $("#timer");
+  if (!state) { el.textContent = "00:00"; return; }
+  el.textContent = formatTime(state.finished ? state.timeBase : elapsedMs());
+}
+
+function renderAll() {
+  if (!state) return;
+  renderQuestion();
+  renderPalette();
+  updateProgress();
+  updateTimer();
+}
+function updateProgress() {
+  const total = state.order.length;
+  const done = answeredCount(state);
+  $("#answeredCount").textContent = `${done}/${total}`;
+  $("#progressFill").style.width = total ? `${(done / total) * 100}%` : "0%";
+}
+function renderQuestion(autoPending) {
+  if (!state) return;
+  const q = currentQ();
+  const total = state.order.length;
+  const idx = state.idx;
+  const ans = state.answers[q.id] || [];
+  const checked = !!state.checked[q.id];
+  const isCorrect = checked && sameSet(ans, q.a);
+
+  $("#qCounter").textContent = `Câu ${idx + 1} / ${total}`;
+
+  const badge = $("#qBadge");
+  if (q.pick > 1) {
+    badge.textContent = `Chọn ${q.pick} đáp án`;
+    badge.classList.remove("hidden");
+  } else {
+    badge.classList.add("hidden");
+  }
+
+  const status = $("#qStatus");
+  status.className = "status-pill hidden";
+  if (checked) {
+    status.textContent = isCorrect ? "✓ Đúng" : "✗ Sai";
+    status.classList.add(isCorrect ? "ok" : "no");
+    status.classList.remove("hidden");
+  }
+
+  $("#qText").innerHTML = fmt(q.q);
+  const note = $("#qNote");
+  if (q.note) {
+    note.textContent = q.note;
+    note.classList.remove("hidden");
+  } else {
+    note.classList.add("hidden");
+    note.textContent = "";
+  }
+
+  const order = state.optsOrder[q.id];
+  $("#options").innerHTML = order.map((orig, i) => {
+    const letter = String.fromCharCode(65 + i);
+    const selected = ans.includes(orig);
+    const isKey = q.a.includes(orig);
+    let cls = "option" + (q.pick > 1 ? " multi" : "");
+    if (selected) cls += " selected";
+    if (checked) {
+      if (isKey) cls += " correct";
+      if (selected && !isKey) cls += " wrong";
+      if (!isKey && !selected) cls += " dim";
+      if (isKey && !selected) cls += " missed";
+    }
+    return `<button type="button" class="${cls}" data-orig="${orig}" aria-pressed="${selected}" ${checked ? "disabled" : ""}>
+      <span class="letter">${letter}</span>
+      <span class="opt-text">${fmt(q.opts[orig])}</span>
+    </button>`;
+  }).join("");
+
+  const fb = $("#feedback");
+  if (checked) {
+    fb.className = "feedback " + (isCorrect ? "ok" : "no");
+    if (state.mode === "quiz") {
+      const last = idx === total - 1;
+      const auto = !!autoPending && !last;
+      fb.innerHTML = `<div class="fb-head">
+          <b>${isCorrect ? "Chính xác!" : "Chưa đúng"}</b>
+          <span class="fb-key">Đáp án đúng: ${displayLetters(q.id, q.a)}</span>
+        </div>
+        ${last
+          ? `<p class="fb-auto">Câu cuối cùng — bấm <b>Nộp bài</b> để xem kết quả.</p>`
+          : auto
+            ? `<div class="fb-auto"><span class="fb-auto-bar"><i style="animation-duration:${AUTO_ADVANCE_MS}ms"></i></span><span>Tự chuyển câu sau ${AUTO_ADVANCE_MS / 1000} giây…</span><button type="button" class="fb-next" data-next="1">Câu tiếp →</button></div>`
+            : `<div class="fb-auto"><span>Đã chấm.</span><button type="button" class="fb-next" data-next="1">Câu tiếp →</button></div>`}`;
+    } else {
+      fb.innerHTML = `<div class="fb-head">
+          <b>${isCorrect ? "Chính xác!" : "Chưa đúng"}</b>
+          <span class="fb-key">Đáp án đúng: ${displayLetters(q.id, q.a)}</span>
+        </div>
+        <p><b>Giải thích:</b> ${fmt(q.exp)}</p>
+        ${optNotesHtml(q)}`;
+    }
+    fb.classList.remove("hidden");
+  } else {
+    fb.className = "feedback hidden";
+    fb.innerHTML = "";
+  }
+
+  $("#prevBtn").disabled = idx === 0;
+  const checkBtn = $("#checkBtn");
+  const showCheck = state.mode === "practice" && !checked && ans.length > 0;
+  checkBtn.classList.toggle("hidden", !showCheck);
+
+  const nextBtn = $("#nextBtn");
+  nextBtn.textContent = idx === total - 1 ? "Nộp bài" : "Câu tiếp →";
+  const quizFeedback = state.mode === "quiz" && checked;
+  nextBtn.classList.toggle("hidden", quizFeedback && idx !== total - 1);
+}
+function renderPalette() {
+  if (!state) return;
+  $("#palette").innerHTML = state.order.map((id, i) => {
+    const ans = state.answers[id] || [];
+    const checked = !!state.checked[id];
+    let cls = "pal-btn";
+    if (ans.length) cls += " answered";
+    if (checked) cls += sameSet(ans, byId.get(id).a) ? " correct" : " wrong";
+    if (i === state.idx) cls += " current";
+    return `<button type="button" class="${cls}" data-i="${i}" title="Câu ${i + 1}" aria-label="Đến câu ${i + 1}">${i + 1}</button>`;
+  }).join("");
+}
+
+/* ---------- Answering ---------- */
+function toggleOption(orig) {
+  if (!state) return;
+  const q = currentQ();
+  if (state.checked[q.id]) return;
+  let arr = (state.answers[q.id] || []).slice();
+  if (q.pick === 1) {
+    arr = arr.includes(orig) ? [] : [orig];
+  } else {
+    if (arr.includes(orig)) {
+      arr = arr.filter(x => x !== orig);
+    } else {
+      if (arr.length >= q.pick) {
+        toast(`Câu này chỉ chọn tối đa ${q.pick} đáp án.`);
+        return;
+      }
+      arr.push(orig);
+    }
+  }
+  arr.sort((a, b) => a - b);
+  if (arr.length) state.answers[q.id] = arr;
+  else delete state.answers[q.id];
+  saveState();
+  renderQuestion();
+  renderPalette();
+  updateProgress();
+
+  if (state.mode === "quiz") {
+    if (q.pick === 1) {
+      if (arr.length === 1) checkAnswer();
+      else clearAdvance();
+    } else if (arr.length >= q.pick) {
+      checkAnswer();
+    } else {
+      clearAdvance();
+    }
+  }
+}
+function checkAnswer() {
+  if (!state) return;
+  if (state.mode !== "practice" && state.mode !== "quiz") return;
+  const q = currentQ();
+  if (state.checked[q.id]) return;
+  if (!(state.answers[q.id] || []).length) return;
+  state.checked[q.id] = true;
+  saveState();
+  renderQuestion(state.mode === "quiz");
+  renderPalette();
+  if (state.mode === "quiz") scheduleAdvance(AUTO_ADVANCE_MS);
+}
+function goTo(idx) {
+  if (!state) return;
+  if (idx < 0 || idx >= state.order.length) return;
+  clearAdvance();
+  state.idx = idx;
+  saveState();
+  renderAll();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function nextQuestion() {
+  if (!state) return;
+  if (state.idx < state.order.length - 1) goTo(state.idx + 1);
+  else requestSubmit();
+}
+function prevQuestion() {
+  if (state) goTo(state.idx - 1);
+}
+
+/* ---------- Submit / results ---------- */
+async function requestSubmit() {
+  if (!state || state.finished) return;
+  clearAdvance();
+  const total = state.order.length;
+  const empty = total - answeredCount(state);
+  if (empty > 0) {
+    const ok = await confirmModal({
+      title: "Nộp bài?",
+      text: `Bạn còn ${empty} câu chưa trả lời. Các câu bỏ trống sẽ được tính là chưa làm.`,
+      okText: "Nộp bài"
+    });
+    if (!ok) return;
+  }
+  finishQuiz();
+}
+function finishQuiz() {
+  if (!state) return;
+  clearAdvance();
+  state.finished = true;
+  state.submittedAt = Date.now();
+  state.timeBase = elapsedMs();
+  state.runSince = null;
+  stopTimer();
+  saveState();
+  reviewFilter = "all";
+  showScreen("result");
+  renderResults();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function computeStats() {
+  const total = state.order.length;
+  let correct = 0, wrong = 0, empty = 0;
+  for (const id of state.order) {
+    const ans = state.answers[id] || [];
+    if (!ans.length) empty++;
+    else if (sameSet(ans, byId.get(id).a)) correct++;
+    else wrong++;
+  }
+  return { total, correct, wrong, empty, pct: total ? Math.round((correct / total) * 100) : 0 };
+}
+function renderResults() {
+  if (!state) return;
+  const s = computeStats();
+  $("#scoreRing").style.setProperty("--pct", s.pct);
+  $("#scorePct").textContent = `${s.pct}%`;
+  $("#resultSub").textContent = `${s.correct}/${s.total} câu đúng · ${s.pct}%`;
+
+  let title = "Đừng nản, luyện lại nhé";
+  if (s.pct === 100) title = "Xuất sắc! 🎉";
+  else if (s.pct >= 80) title = "Rất tốt! 👏";
+  else if (s.pct >= 50) title = "Khá ổn, cần ôn thêm";
+  $("#resultTitle").textContent = title;
+
+  $("#statCorrect").textContent = s.correct;
+  $("#statWrong").textContent = s.wrong;
+  $("#statEmpty").textContent = s.empty;
+  $("#statTime").textContent = formatTime(state.timeBase);
+  $("#retryWrongBtn").disabled = s.wrong === 0;
+
+  $("#tabAll").textContent = s.total;
+  $("#tabWrong").textContent = s.wrong;
+  $("#tabEmpty").textContent = s.empty;
+  $$("#reviewTabs .tab").forEach(t => t.classList.toggle("active", t.dataset.filter === "all"));
+  reviewFilter = "all";
+  renderReview();
+}
+function renderReview() {
+  if (!state) return;
+  const total = state.order.length;
+  const items = [];
+  state.order.forEach((id, i) => {
+    const q = byId.get(id);
+    const ans = state.answers[id] || [];
+    const correct = sameSet(ans, q.a);
+    const empty = ans.length === 0;
+    if (reviewFilter === "wrong" && (empty || correct)) return;
+    if (reviewFilter === "empty" && !empty) return;
+
+    const status = empty ? "empty" : (correct ? "correct" : "wrong");
+    const label = empty ? "Chưa làm" : (correct ? "Đúng" : "Sai");
+    const order = state.optsOrder[id];
+    const opts = order.map((orig, j) => {
+      const letter = String.fromCharCode(65 + j);
+      const isKey = q.a.includes(orig);
+      const isYou = ans.includes(orig);
+      let cls = "rev-opt";
+      if (isKey) cls += " key";
+      if (isYou && !isKey) cls += " wrong";
+      return `<div class="${cls}">
+        <span class="letter">${letter}</span>
+        <span class="rev-opt-text">${fmt(q.opts[orig])}</span>
+        <span class="rev-tags">
+          ${isYou ? '<i class="mini you">Bạn chọn</i>' : ""}
+          ${isKey ? '<i class="mini key">Đáp án</i>' : ""}
+        </span>
+      </div>`;
+    }).join("");
+
+    items.push(`<article class="rev-item ${status}">
+      <div class="rev-head">
+        <span class="rev-num">Câu ${i + 1}${i + 1 < total ? "" : ""}</span>
+        <span class="rev-tag ${status}">${label}</span>
+      </div>
+      <p class="rev-q">${fmt(q.q)}</p>
+      ${q.note ? `<pre class="rev-note">${esc(q.note)}</pre>` : ""}
+      ${opts}
+      ${optNotesHtml(q)}
+      <p class="rev-exp"><b>Giải thích:</b> ${fmt(q.exp)}</p>
+    </article>`);
+  });
+
+  $("#reviewList").innerHTML = items.length
+    ? items.join("")
+    : `<div class="empty-state">Không có câu nào trong mục này.</div>`;
+}
+
+/* ---------- Home / resume ---------- */
+function refreshResumeBox() {
+  const box = $("#resumeBox");
+  const saved = loadSaved();
+  if (!saved) { box.classList.add("hidden"); box.innerHTML = ""; return; }
+  const total = saved.order.length;
+  const done = answeredCount(saved);
+  if (saved.finished) {
+    const correct = correctCount(saved);
+    box.innerHTML = `<div><b>Bài đã nộp</b><small>${correct}/${total} câu đúng · ${done}/${total} đã trả lời</small></div>
+      <button type="button" class="btn btn-soft btn-sm" data-resume="review">Xem lại</button>`;
+  } else {
+    box.innerHTML = `<div><b>Bài làm dở</b><small>${done}/${total} câu đã trả lời</small></div>
+      <button type="button" class="btn btn-soft btn-sm" data-resume="continue">Tiếp tục</button>`;
+  }
+  box.classList.remove("hidden");
+}
+function backHome() {
+  if (state && !state.finished) saveState();
+  clearAdvance();
+  stopTimer();
+  showScreen("start");
+  refreshResumeBox();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ---------- Events: start screen ---------- */
+$$(".mode-card").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedMode = btn.dataset.mode;
+    $$(".mode-card").forEach(b => {
+      const on = b === btn;
+      b.classList.toggle("selected", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+  });
+});
+
+$("#countMinus").addEventListener("click", () => stepCount(-1));
+$("#countPlus").addEventListener("click", () => stepCount(1));
+$("#qCount").addEventListener("input", () => {
+  const n = Number($("#qCount").value);
+  if (Number.isFinite(n) && n >= 1 && n <= QUESTIONS.length) syncCountUI(Math.floor(n));
+});
+$("#qCount").addEventListener("blur", readCount);
+$("#qCount").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") { e.preventDefault(); readCount(); $("#startBtn").click(); }
+});
+$("#countPresets").addEventListener("click", (e) => {
+  const btn = e.target.closest(".preset");
+  if (!btn) return;
+  const n = clampCount(btn.dataset.count);
+  $("#qCount").value = n;
+  syncCountUI(n);
+});
+
+$("#startBtn").addEventListener("click", async () => {
+  const saved = loadSaved();
+  if (saved && !saved.finished) {
+    const ok = await confirmModal({
+      title: "Bắt đầu bài mới?",
+      text: "Tiến độ bài đang làm dở sẽ bị xóa. Bạn có chắc muốn bắt đầu lại?",
+      okText: "Bắt đầu mới",
+      danger: true
+    });
+    if (!ok) return;
+  }
+  const shuffleQ = $("#shuffleQ").checked;
+  const count = readCount();
+  startQuiz(selectedMode, shuffleQ, $("#shuffleO").checked, buildQuizIds(count, shuffleQ));
+});
+
+$("#resumeBox").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-resume]");
+  if (!btn) return;
+  const saved = loadSaved();
+  if (!saved) { refreshResumeBox(); return; }
+  resumeQuiz(saved);
+});
+
+/* ---------- Events: quiz ---------- */
+$("#options").addEventListener("click", (e) => {
+  const btn = e.target.closest(".option");
+  if (!btn || btn.disabled) return;
+  btn.blur();
+  toggleOption(Number(btn.dataset.orig));
+});
+$("#palette").addEventListener("click", (e) => {
+  const btn = e.target.closest(".pal-btn");
+  if (!btn) return;
+  btn.blur();
+  goTo(Number(btn.dataset.i));
+});
+$("#prevBtn").addEventListener("click", prevQuestion);
+$("#nextBtn").addEventListener("click", nextQuestion);
+$("#checkBtn").addEventListener("click", checkAnswer);
+$("#feedback").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-next]");
+  if (!btn) return;
+  e.preventDefault();
+  nextQuestion();
+});
+$("#submitBtn").addEventListener("click", requestSubmit);
+$("#exitBtn").addEventListener("click", async () => {
+  const ok = await confirmModal({
+    title: "Thoát bài làm?",
+    text: "Tiến độ sẽ được lưu lại để bạn tiếp tục sau.",
+    okText: "Thoát",
+    cancelText: "Ở lại"
+  });
+  if (ok) backHome();
+});
+
+/* ---------- Events: result ---------- */
+$("#reviewTabs").addEventListener("click", (e) => {
+  const tab = e.target.closest(".tab");
+  if (!tab) return;
+  reviewFilter = tab.dataset.filter;
+  $$("#reviewTabs .tab").forEach(t => t.classList.toggle("active", t === tab));
+  renderReview();
+});
+$("#retryWrongBtn").addEventListener("click", () => {
+  if (!state) return;
+  const ids = state.order.filter(id => {
+    const ans = state.answers[id] || [];
+    return ans.length > 0 && !sameSet(ans, byId.get(id).a);
+  });
+  if (!ids.length) { toast("Không có câu sai để làm lại."); return; }
+  startQuiz(state.mode, state.shuffleQ, state.shuffleO, ids);
+});
+$("#retryAllBtn").addEventListener("click", () => {
+  if (!state) return;
+  startQuiz(state.mode, state.shuffleQ, state.shuffleO, buildQuizIds(state.order.length, state.shuffleQ));
+});
+$("#homeBtn").addEventListener("click", backHome);
+
+/* ---------- Keyboard ---------- */
+document.addEventListener("keydown", (e) => {
+  const modal = $("#modal");
+  if (!modal.classList.contains("hidden")) {
+    if (e.key === "Escape") closeModal(false);
+    return;
+  }
+  if (!state || state.finished || $("#quizScreen").classList.contains("hidden")) return;
+  const target = e.target;
+  if (target instanceof Element && target.closest("input, textarea, select, [contenteditable='true']")) return;
+
+  const q = currentQ();
+  const order = state.optsOrder[q.id];
+  if (e.key === " " || e.code === "Space") {
+    if (target instanceof Element && target.closest("button")) return;
+    e.preventDefault();
+    if (state.mode === "exam" || state.checked[q.id]) nextQuestion();
+    return;
+  }
+  if (/^[a-eA-E]$/.test(e.key)) {
+    const pos = e.key.toUpperCase().charCodeAt(0) - 65;
+    if (pos < order.length) {
+      e.preventDefault();
+      toggleOption(order[pos]);
+    }
+    return;
+  }
+  if (e.key === "Enter") {
+    if (target instanceof Element && target.closest("button")) return;
+    e.preventDefault();
+    const canCheck = state.mode === "practice" && !state.checked[q.id] && (state.answers[q.id] || []).length > 0;
+    if (canCheck) checkAnswer();
+    else nextQuestion();
+    return;
+  }
+  if (e.key === "ArrowRight") { e.preventDefault(); nextQuestion(); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); prevQuestion(); }
+});
+
+/* ---------- Boot ---------- */
+window.addEventListener("beforeunload", () => { if (state && !state.finished) saveState(); });
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && state && !state.finished) saveState();
+});
+
+refreshResumeBox();
+</script>
+</body>
+</html>
