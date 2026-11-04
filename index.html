@@ -30,7 +30,7 @@
   *,*::before,*::after{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    margin:0; min-height:100vh; color:var(--text);
+    margin:0; min-height:100vh; min-height:100dvh; color:var(--text);
     font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
     background:
       radial-gradient(900px 520px at 8% -12%, var(--glow1), transparent 62%),
@@ -45,13 +45,23 @@
     padding:1px 5px; font-size:.9em;
   }
   .hidden{display:none !important}
-  .screen{min-height:100vh}
+  .screen{min-height:100vh; min-height:100dvh}
+  button:focus-visible,
+  .option:focus-visible,
+  .pal-btn:focus-visible,
+  .tab:focus-visible,
+  .preset:focus-visible,
+  .mode-card:focus-visible,
+  .link-btn:focus-visible,
+  .mistake-chip:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
 
   /* ---------- Start ---------- */
   .start-wrap{
     max-width:1140px; margin:0 auto; padding:60px 24px 80px;
     display:grid; grid-template-columns:1.12fr .88fr; gap:52px; align-items:center;
-    min-height:100vh; position:relative;
+    min-height:100vh; min-height:100dvh; position:relative;
   }
   .start-theme{position:absolute; top:22px; right:24px; z-index:5}
   .result-theme{position:absolute; top:22px; right:24px; z-index:5}
@@ -239,6 +249,8 @@
   .bm-btn{transition:transform .15s}
   .bm-btn.bm-active{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
   .q-text{font-size:21.5px; line-height:1.5; letter-spacing:-.012em; margin:14px 0 20px; font-weight:750}
+  #qText:focus{outline:none}
+  #qText:focus-visible{outline:2px solid color-mix(in srgb,var(--accent) 45%,transparent); outline-offset:4px; border-radius:6px}
   .q-note{
     margin:0 0 18px; padding:12px 15px; border-radius:11px;
     background:var(--surface-2); border-left:3px solid var(--accent);
@@ -273,6 +285,7 @@
     margin-top:18px; padding:15px 17px; border-radius:13px; border:1px solid var(--line);
     background:var(--surface-2);
   }
+  #feedback:focus{outline:none}
   .feedback.ok{background:var(--green-soft); border-color:color-mix(in srgb,var(--green) 28%,transparent)}
   .feedback.no{background:var(--red-soft); border-color:color-mix(in srgb,var(--red) 28%,transparent)}
   .fb-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:7px}
@@ -295,6 +308,11 @@
     background:var(--accent); color:#fff; box-shadow:0 4px 10px color-mix(in srgb,var(--accent) 28%,transparent);
   }
   .fb-next:hover{filter:brightness(1.06)}
+  .fb-stop{
+    border:0; background:transparent; color:var(--muted); font:inherit;
+    font-size:11.5px; font-weight:700; cursor:pointer; text-decoration:underline; padding:4px 2px;
+  }
+  .fb-stop:hover{color:var(--text)}
   .fb-auto-bar i{
     display:block; height:100%; width:100%; border-radius:inherit;
     background:var(--accent); transform-origin:left;
@@ -378,7 +396,7 @@
   .review-section{margin-top:30px}
   .review-head{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px}
   .review-head h2{margin:0; font-size:20px; letter-spacing:-.02em}
-  .tabs{display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:4px}
+  .tabs{display:flex; flex-wrap:wrap; gap:4px; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:4px}
   .tab{
     border:0; background:transparent; color:var(--muted); padding:7px 11px;
     border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer;
@@ -400,6 +418,7 @@
   .rev-tag.wrong{color:var(--red); background:var(--red-soft)}
   .rev-tag.empty{color:var(--amber); background:var(--amber-soft)}
   .rev-tag.bm{color:var(--accent); background:var(--accent-soft); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent)}
+  button.rev-unbookmark{font:inherit; cursor:pointer}
   .rev-item.pinned{border-left-color:var(--accent); box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
   .rev-q{margin:9px 0 11px; font-size:15.5px; font-weight:650; line-height:1.55}
   .rev-note{
@@ -467,6 +486,11 @@
     font-weight:700; cursor:pointer; text-decoration:underline; padding:2px 4px;
   }
   .stats-head .link-btn:hover{color:var(--red)}
+  .link-btn{
+    border:0; background:transparent; color:var(--accent); font:inherit; font-size:11.5px;
+    font-weight:700; cursor:pointer; text-decoration:underline; padding:2px 4px;
+  }
+  .link-btn:hover{color:var(--accent-2)}
   .stats-line{font-size:12.5px; color:var(--muted); line-height:1.7}
   .stats-line b{color:var(--text)}
   .mistake-chips{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 0}
@@ -476,6 +500,14 @@
     border-radius:999px; padding:4px 10px; font:inherit; font-size:11.5px; font-weight:750; cursor:pointer;
   }
   .mistake-chip:hover{filter:brightness(.96)}
+  .peek-card{
+    margin-top:12px; padding:15px; border:1px solid var(--line); border-radius:14px;
+    background:var(--surface); box-shadow:0 8px 20px rgba(15,23,42,.05);
+  }
+  .peek-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px}
+  .peek-head b{font-size:13px}
+  .peek-card .rev-q{font-size:14.5px}
+  .peek-actions{display:flex; justify-content:flex-end; margin-top:12px}
   .analysis-list{list-style:none; padding:0; margin:10px 0 0; display:grid; gap:6px}
   .analysis-list li{
     font-size:13px; color:var(--text); line-height:1.6;
@@ -574,7 +606,7 @@
     <div class="start-wrap">
       <div class="hero">
         <span class="eyebrow">Mạng máy tính · Ôn thi</span>
-        <h1>165 câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
+        <h1><span id="heroTotal">165</span> câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
         <p>Toàn bộ ngân hàng câu hỏi từ file Word, gồm cả câu chọn nhiều đáp án. Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
         <ul class="hero-points">
           <li>Phản hồi đúng/sai và giải thích chi tiết</li>
@@ -585,8 +617,8 @@
           <li>Bộ 40 câu tiếng Việt mở rộng (tổng 165 câu)</li>
         </ul>
         <div class="hero-stats">
-          <div><b>165</b><span>câu hỏi</span></div>
-          <div><b>48</b><span>câu chọn nhiều</span></div>
+          <div><b id="heroTotalStat">165</b><span>câu hỏi</span></div>
+          <div><b id="heroMultiStat">51</b><span>câu chọn nhiều</span></div>
           <div><b>4–5</b><span>lựa chọn mỗi câu</span></div>
         </div>
       </div>
@@ -677,10 +709,10 @@
             <span id="qStatus" class="status-pill hidden"></span>
             <button type="button" id="bmBtn" class="icon-btn bm-btn" title="Lưu câu để xem lại sau khi nộp bài (phím S)" aria-label="Lưu câu">🔖</button>
           </div>
-          <h2 id="qText" class="q-text"></h2>
+          <h2 id="qText" class="q-text" tabindex="-1"></h2>
           <pre id="qNote" class="q-note hidden"></pre>
           <div id="options" class="options" role="group" aria-label="Các đáp án"></div>
-          <div id="feedback" class="feedback hidden" aria-live="polite"></div>
+          <div id="feedback" class="feedback hidden" aria-live="polite" tabindex="-1"></div>
           <div class="q-actions">
             <button type="button" id="prevBtn" class="btn btn-ghost">← Câu trước</button>
             <span class="q-actions-spacer"></span>
@@ -740,6 +772,7 @@
             <button type="button" class="tab active" data-filter="all">Tất cả <span id="tabAll"></span></button>
             <button type="button" class="tab" data-filter="wrong">Câu sai <span id="tabWrong"></span></button>
             <button type="button" class="tab" data-filter="empty">Chưa làm <span id="tabEmpty"></span></button>
+            <button type="button" class="tab" data-filter="bookmarks">Đã lưu <span id="tabBookmarks"></span></button>
           </div>
         </div>
         <div id="reviewList" class="review-list"></div>
@@ -768,8 +801,11 @@ const byId = new Map(QUESTIONS.map(q => [q.id, q]));
 const STORAGE_KEY = "mmt-quiz-state-v1";
 const THEME_KEY = "mmt-quiz-theme";
 const HISTORY_KEY = "mmt-quiz-history-v1";
+const BOOKMARK_KEY = "mmt-quiz-bookmarks-v1";
 const NOTICE_KEY = "mmt-quiz-notice-v3";
 const ALL_IDS = QUESTIONS.map(q => q.id);
+const TOTAL_Q = QUESTIONS.length;
+const MULTI_Q = QUESTIONS.filter(q => q.a.length > 1).length;
 const AUTO_ADVANCE_MS = 5000;
 
 let state = null;
@@ -778,6 +814,8 @@ let timerId = null;
 let toastTimer = null;
 let advanceTimer = null;
 let modalResolver = null;
+let lastModalFocus = null;
+let focusQuestionOnRender = false;
 let reviewFilter = "all";
 
 /* ---------- Helpers ---------- */
@@ -818,8 +856,13 @@ function elapsedMs() {
 function currentQ() {
   return byId.get(state.order[state.idx]);
 }
+function optOrderFor(qid) {
+  if (state && state.optsOrder && state.optsOrder[qid]) return state.optsOrder[qid];
+  const q = byId.get(qid);
+  return q ? q.opts.map((_, i) => i) : [];
+}
 function displayLetter(qid, origIdx) {
-  const pos = state.optsOrder[qid].indexOf(origIdx);
+  const pos = optOrderFor(qid).indexOf(origIdx);
   return pos >= 0 ? String.fromCharCode(65 + pos) : "?";
 }
 function displayLetters(qid, arr) {
@@ -828,7 +871,7 @@ function displayLetters(qid, arr) {
 }
 function optNotesHtml(q) {
   if (!q.notes) return "";
-  const rows = state.optsOrder[q.id]
+  const rows = optOrderFor(q.id)
     .filter(orig => q.notes[orig])
     .map(orig => `<div class="opt-note"><b>${displayLetter(q.id, orig)}.</b> ${fmt(q.notes[orig])}</div>`);
   return rows.length ? `<div class="opt-notes">${rows.join("")}</div>` : "";
@@ -846,6 +889,7 @@ function clearAdvance() {
 function scheduleAdvance(delay) {
   clearAdvance();
   if (!state || state.finished || state.mode !== "quiz") return;
+  if (document.visibilityState === "hidden") return;
   if (state.idx >= state.order.length - 1) return;
   advanceTimer = setTimeout(() => {
     advanceTimer = null;
@@ -892,10 +936,10 @@ function answeredCount(s) {
 function clampCount(raw) {
   const n = Math.floor(Number(raw));
   if (!Number.isFinite(n)) return 1;
-  return Math.min(QUESTIONS.length, Math.max(1, n));
+  return Math.min(TOTAL_Q, Math.max(1, n));
 }
 function syncCountUI(n) {
-  $("#countHint").textContent = n >= QUESTIONS.length ? `Tất cả ${QUESTIONS.length} câu` : `${n} câu`;
+  $("#countHint").textContent = n >= TOTAL_Q ? `Tất cả ${TOTAL_Q} câu` : `${n} câu`;
   $$("#countPresets .preset").forEach(b => b.classList.toggle("active", Number(b.dataset.count) === n));
 }
 function readCount() {
@@ -912,7 +956,7 @@ function buildQuizIds(count, shuffleQuestions) {
 }
 function stepCount(delta) {
   const input = $("#qCount");
-  input.value = Math.min(QUESTIONS.length, Math.max(1, clampCount(input.value) + delta));
+  input.value = Math.min(TOTAL_Q, Math.max(1, clampCount(input.value) + delta));
   syncCountUI(Number(input.value));
 }
 function correctCount(s) {
@@ -939,6 +983,20 @@ function recordSession(rec) {
 function clearHistory() {
   try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
 }
+function loadBookmarks() {
+  try {
+    const raw = localStorage.getItem(BOOKMARK_KEY);
+    const obj = raw ? JSON.parse(raw) : {};
+    return obj && typeof obj === "object" && !Array.isArray(obj) ? obj : {};
+  } catch (e) { return {}; }
+}
+function saveBookmarks(obj) {
+  try { localStorage.setItem(BOOKMARK_KEY, JSON.stringify(obj || {})); } catch (e) {}
+}
+function bookmarkCount(s) {
+  if (!s || !Array.isArray(s.order)) return 0;
+  return s.order.filter(id => s.bookmarks && s.bookmarks[id]).length;
+}
 function mistakeTally(history) {
   const freq = {};
   for (const rec of history) {
@@ -959,7 +1017,7 @@ function historyStats(history) {
 }
 function suggestionsFor(s, history) {
   const out = [];
-  if (s.pct === 100) out.push("🥇 Trăm điểm! Hãy thử chế độ <b>Thi thử</b> toàn bộ 125 câu để rèn tốc độ.");
+  if (s.pct === 100) out.push(`🥇 Trăm điểm! Hãy thử chế độ <b>Thi thử</b> toàn bộ ${TOTAL_Q} câu để rèn tốc độ.`);
   else if (s.pct >= 80) out.push("🎯 Điểm khá tốt — bấm <b>Làm lại câu sai</b> để hướng tới tuyệt đối.");
   else out.push("🔁 Bấm <b>Làm lại câu sai</b> và làm đi làm lại đến khi hết câu sai.");
   if (history.length >= 2) {
@@ -977,16 +1035,62 @@ function renderStatsBox() {
   const body = $("#statsBody");
   const history = loadHistory();
   const st = historyStats(history);
-  if (!st) { box.classList.add("hidden"); body.innerHTML = ""; return; }
-  const crit = mistakeTally(history).slice(0, 5);
-  body.innerHTML = `
-    <p class="stats-line">Đã làm <b>${st.played}</b> lần · điểm trung bình <b>${st.avg}%</b> · điểm cao nhất <b>${st.best}%</b></p>
-    ${crit.length
+  const bmIds = Object.keys(loadBookmarks()).map(Number).filter(id => byId.has(id));
+  if (!st && !bmIds.length) { box.classList.add("hidden"); body.innerHTML = ""; return; }
+  const crit = st ? mistakeTally(history).slice(0, 5) : [];
+  let html = "";
+  if (st) {
+    html += `<p class="stats-line">Đã làm <b>${st.played}</b> lần · điểm trung bình <b>${st.avg}%</b> · điểm cao nhất <b>${st.best}%</b></p>`;
+    html += crit.length
       ? `<p class="stats-line">Câu hay sai:</p>
          <div class="mistake-chips">${crit.map(m =>
-           `<button type="button" class="mistake-chip" data-qid="${m.id}" title="${esc(m.q.q.slice(0, 90))}…">Câu ${m.id} · sai ${m.count} lần</button>`).join("")}</div>`
-      : `<p class="stats-line">Chưa ghi nhận câu nào hay sai. Cứ làm bài nhé!</p>`}`;
+           `<button type="button" class="mistake-chip" data-qid="${m.id}" title="${esc(m.q.q.slice(0, 90))}…">Câu #${m.id} · sai ${m.count} lần</button>`).join("")}</div>`
+      : `<p class="stats-line">Chưa ghi nhận câu nào hay sai. Cứ làm bài nhé!</p>`;
+  } else {
+    html += `<p class="stats-line">Chưa có lịch sử làm bài.</p>`;
+  }
+  if (bmIds.length) {
+    html += `<p class="stats-line">🔖 Đã lưu <b>${bmIds.length}</b> câu · <button type="button" class="link-btn" data-bookmark-practice="1">Luyện ngay</button></p>`;
+  }
+  body.innerHTML = html;
   box.classList.remove("hidden");
+}
+function peekHtml(id) {
+  const q = byId.get(Number(id));
+  if (!q) return "";
+  const order = optOrderFor(q.id);
+  const opts = order.map((orig, j) => {
+    const isKey = q.a.includes(orig);
+    return `<div class="rev-opt${isKey ? " key" : ""}">
+      <span class="letter">${String.fromCharCode(65 + j)}</span>
+      <span class="rev-opt-text">${fmt(q.opts[orig])}</span>
+      <span class="rev-tags">${isKey ? '<i class="mini key">Đáp án</i>' : ""}</span>
+    </div>`;
+  }).join("");
+  return `<div class="peek-card" data-peek-id="${q.id}">
+    <div class="peek-head"><b>Câu hỏi #${q.id}</b><button type="button" class="link-btn" data-peek-close="1">Đóng ✕</button></div>
+    <p class="rev-q">${fmt(q.q)}</p>
+    ${q.note ? `<pre class="rev-note">${esc(q.note)}</pre>` : ""}
+    ${opts}
+    ${optNotesHtml(q)}
+    <p class="rev-exp"><b>Giải thích:</b> ${fmt(q.exp)}</p>
+    <div class="peek-actions"><button type="button" class="btn btn-soft btn-sm" data-peek-drill="${q.id}">Luyện câu này</button></div>
+  </div>`;
+}
+async function startPractice(ids, opts = {}) {
+  const clean = (ids || []).map(Number).filter(id => byId.has(id));
+  if (!clean.length) { toast("Không có câu nào để luyện."); return; }
+  const saved = loadSaved();
+  if (saved && !saved.finished) {
+    const ok = await confirmModal({
+      title: "Bắt đầu bài luyện?",
+      text: "Bài đang làm dở sẽ bị thay thế. Tiến độ hiện tại sẽ được lưu đè.",
+      okText: "Bắt đầu",
+      danger: true
+    });
+    if (!ok) return;
+  }
+  startQuiz("practice", !!opts.shuffle, false, clean);
 }
 function renderAnalysis(s) {
   const card = $("#analysisCard");
@@ -1008,7 +1112,7 @@ function renderAnalysis(s) {
     ${crit.length
       ? `<p class="stats-line" style="margin-top:10px">Câu hay sai nhất (theo toàn bộ lịch sử):</p>
          <div class="mistake-chips">${crit.map(m =>
-           `<button type="button" class="mistake-chip" data-qid="${m.id}" title="${esc(m.q.q.slice(0, 90))}…">Câu ${m.id} · sai ${m.count} lần</button>`).join("")}</div>`
+           `<button type="button" class="mistake-chip" data-qid="${m.id}" title="${esc(m.q.q.slice(0, 90))}…">Câu #${m.id} · sai ${m.count} lần</button>`).join("")}</div>`
       : `<p class="stats-line" style="margin-top:10px">Không có câu nào hay sai — quá tốt! 🎉</p>`}
     <ul class="analysis-list">${suggestionsFor(s, history).map(t => `<li>${t}</li>`).join("")}</ul>
     ${recent.length >= 2
@@ -1045,6 +1149,7 @@ $$(".theme-toggle").forEach(btn => btn.addEventListener("click", () => {
 /* ---------- Modal ---------- */
 function confirmModal(opts) {
   return new Promise(resolve => {
+    lastModalFocus = document.activeElement;
     modalResolver = resolve;
     $("#modalTitle").textContent = opts.title || "Xác nhận";
     $("#modalText").textContent = opts.text || "";
@@ -1058,6 +1163,10 @@ function confirmModal(opts) {
 }
 function closeModal(value) {
   $("#modal").classList.add("hidden");
+  if (lastModalFocus && typeof lastModalFocus.focus === "function") {
+    lastModalFocus.focus({ preventScroll: true });
+  }
+  lastModalFocus = null;
   if (modalResolver) {
     const r = modalResolver;
     modalResolver = null;
@@ -1067,6 +1176,15 @@ function closeModal(value) {
 $("#modalOk").addEventListener("click", () => closeModal(true));
 $("#modalCancel").addEventListener("click", () => closeModal(false));
 $("#modal").addEventListener("click", (e) => { if (e.target === $("#modal")) closeModal(false); });
+$("#modal").addEventListener("keydown", (e) => {
+  if (e.key !== "Tab") return;
+  const focusables = $$("#modal .modal-box button:not(:disabled)");
+  if (!focusables.length) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
 
 /* ---------- Quiz lifecycle ---------- */
 function makeOptsOrder(shuffleOptions) {
@@ -1090,7 +1208,7 @@ function startQuiz(mode, shuffleQuestions, shuffleOptions, ids) {
     optsOrder: makeOptsOrder(shuffleOptions),
     answers: {},
     checked: {},
-    bookmarks: {},
+    bookmarks: loadBookmarks(),
     idx: 0,
     timeBase: 0,
     runSince: Date.now(),
@@ -1103,12 +1221,14 @@ function startQuiz(mode, shuffleQuestions, shuffleOptions, ids) {
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   startTimer();
   saveState();
+  focusQuestionOnRender = true;
   renderAll();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function resumeQuiz(saved) {
   state = saved;
-  state.bookmarks = state.bookmarks || {};
+  state.bookmarks = Object.assign({}, state.bookmarks || {}, loadBookmarks());
+  saveBookmarks(state.bookmarks);
   state.runSince = state.finished ? null : Date.now();
   selectedMode = state.mode;
   $("#modeChip").textContent = modeLabel(state.mode);
@@ -1118,9 +1238,9 @@ function resumeQuiz(saved) {
   } else {
     showScreen("quiz");
     startTimer();
+    focusQuestionOnRender = true;
     renderAll();
   }
-  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 function startTimer() {
@@ -1159,12 +1279,13 @@ function renderQuestion(autoPending) {
   const ans = state.answers[q.id] || [];
   const checked = !!state.checked[q.id];
   const isCorrect = checked && sameSet(ans, q.a);
+  const required = q.a.length;
 
   $("#qCounter").textContent = `Câu ${idx + 1} / ${total}`;
 
   const badge = $("#qBadge");
-  if (q.pick > 1) {
-    badge.textContent = `Chọn ${q.pick} đáp án`;
+  if (required > 1) {
+    badge.textContent = `Chọn ${required} đáp án`;
     badge.classList.remove("hidden");
   } else {
     badge.classList.add("hidden");
@@ -1193,7 +1314,7 @@ function renderQuestion(autoPending) {
     const letter = String.fromCharCode(65 + i);
     const selected = ans.includes(orig);
     const isKey = q.a.includes(orig);
-    let cls = "option" + (q.pick > 1 ? " multi" : "");
+    let cls = "option" + (required > 1 ? " multi" : "");
     if (selected) cls += " selected";
     if (checked) {
       if (isKey) cls += " correct";
@@ -1220,7 +1341,7 @@ function renderQuestion(autoPending) {
         ${last
           ? `<p class="fb-auto">Câu cuối cùng — bấm <b>Nộp bài</b> để xem kết quả.</p>`
           : auto
-            ? `<div class="fb-auto"><span class="fb-auto-bar"><i style="animation-duration:${AUTO_ADVANCE_MS}ms"></i></span><span>Tự chuyển câu sau ${AUTO_ADVANCE_MS / 1000} giây…</span><button type="button" class="fb-next" data-next="1">Câu tiếp →</button></div>`
+            ? `<div class="fb-auto"><span class="fb-auto-bar"><i style="animation-duration:${AUTO_ADVANCE_MS}ms"></i></span><span>Tự chuyển câu sau ${AUTO_ADVANCE_MS / 1000} giây…</span><button type="button" class="fb-stop" data-stop-advance="1">Dừng</button><button type="button" class="fb-next" data-next="1">Câu tiếp →</button></div>`
             : `<div class="fb-auto"><span>Đã chấm.</span><button type="button" class="fb-next" data-next="1">Câu tiếp →</button></div>`}`;
     } else {
       fb.innerHTML = `<div class="fb-head">
@@ -1248,6 +1369,12 @@ function renderQuestion(autoPending) {
 
   const bmBtn = $("#bmBtn");
   bmBtn.classList.toggle("bm-active", !!(state.bookmarks && state.bookmarks[q.id]));
+
+  if (focusQuestionOnRender) {
+    focusQuestionOnRender = false;
+    const heading = $("#qText");
+    if (heading) heading.focus({ preventScroll: true });
+  }
 }
 function renderPalette() {
   if (!state) return;
@@ -1267,31 +1394,47 @@ function toggleBookmark() {
   if (!state || state.finished) return;
   const q = currentQ();
   if (!state.bookmarks) state.bookmarks = {};
+  const all = loadBookmarks();
   if (state.bookmarks[q.id]) {
     delete state.bookmarks[q.id];
+    delete all[q.id];
     toast("Đã bỏ lưu câu này.");
   } else {
     state.bookmarks[q.id] = true;
-    toast("🔖 Đã lưu câu " + (state.idx + 1) + " — khi nộp bài câu này sẽ lên đầu phần xem lại.");
+    all[q.id] = true;
+    toast("🔖 Đã lưu câu " + (state.idx + 1) + " — câu này sẽ nằm trong tab Đã lưu sau khi nộp bài.");
   }
+  saveBookmarks(all);
   saveState();
   renderQuestion();
 }
 
 /* ---------- Answering ---------- */
+function restoreOptionFocus(orig) {
+  if (!state || state.finished) return;
+  const same = document.querySelector(`.option[data-orig="${orig}"]`);
+  if (same && !same.disabled) { same.focus({ preventScroll: true }); return; }
+  const fb = $("#feedback");
+  if (fb && !fb.classList.contains("hidden")) { fb.focus({ preventScroll: true }); return; }
+  const check = $("#checkBtn");
+  if (check && !check.classList.contains("hidden")) { check.focus({ preventScroll: true }); return; }
+  const next = $("#nextBtn");
+  if (next && !next.classList.contains("hidden")) next.focus({ preventScroll: true });
+}
 function toggleOption(orig) {
   if (!state) return;
   const q = currentQ();
   if (state.checked[q.id]) return;
+  const required = q.a.length;
   let arr = (state.answers[q.id] || []).slice();
-  if (q.pick === 1) {
+  if (required === 1) {
     arr = arr.includes(orig) ? [] : [orig];
   } else {
     if (arr.includes(orig)) {
       arr = arr.filter(x => x !== orig);
     } else {
-      if (arr.length >= q.pick) {
-        toast(`Câu này chỉ chọn tối đa ${q.pick} đáp án.`);
+      if (arr.length >= required) {
+        toast(`Câu này chỉ chọn tối đa ${required} đáp án.`);
         return;
       }
       arr.push(orig);
@@ -1306,15 +1449,16 @@ function toggleOption(orig) {
   updateProgress();
 
   if (state.mode === "quiz") {
-    if (q.pick === 1) {
+    if (required === 1) {
       if (arr.length === 1) checkAnswer();
       else clearAdvance();
-    } else if (arr.length >= q.pick) {
+    } else if (arr.length >= required) {
       checkAnswer();
     } else {
       clearAdvance();
     }
   }
+  restoreOptionFocus(orig);
 }
 function checkAnswer() {
   if (!state) return;
@@ -1327,6 +1471,8 @@ function checkAnswer() {
   renderQuestion(state.mode === "quiz");
   renderPalette();
   if (state.mode === "quiz") scheduleAdvance(AUTO_ADVANCE_MS);
+  const fb = $("#feedback");
+  if (fb && !fb.classList.contains("hidden")) fb.focus({ preventScroll: true });
 }
 function goTo(idx) {
   if (!state) return;
@@ -1334,6 +1480,7 @@ function goTo(idx) {
   clearAdvance();
   state.idx = idx;
   saveState();
+  focusQuestionOnRender = true;
   renderAll();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -1437,6 +1584,7 @@ function renderResults() {
   $("#tabAll").textContent = s.total;
   $("#tabWrong").textContent = s.wrong;
   $("#tabEmpty").textContent = s.empty;
+  $("#tabBookmarks").textContent = bookmarkCount(state);
   $$("#reviewTabs .tab").forEach(t => t.classList.toggle("active", t.dataset.filter === "all"));
   reviewFilter = "all";
   renderReview();
@@ -1451,12 +1599,13 @@ function renderReview() {
     const ans = state.answers[id] || [];
     const correct = sameSet(ans, q.a);
     const empty = ans.length === 0;
+    const bm = !!(state.bookmarks && state.bookmarks[id]);
     if (reviewFilter === "wrong" && (empty || correct)) return;
     if (reviewFilter === "empty" && !empty) return;
+    if (reviewFilter === "bookmarks" && !bm) return;
 
     const status = empty ? "empty" : (correct ? "correct" : "wrong");
     const label = empty ? "Chưa làm" : (correct ? "Đúng" : "Sai");
-    const bm = !!(state.bookmarks && state.bookmarks[id]);
     const order = state.optsOrder[id];
     const opts = order.map((orig, j) => {
       const letter = String.fromCharCode(65 + j);
@@ -1478,7 +1627,7 @@ function renderReview() {
     items.push({ i, bm, html: `<article class="rev-item ${status}${bm ? " pinned" : ""}">
       <div class="rev-head">
         <span class="rev-num">Câu ${i + 1}${i + 1 < total ? "" : ""}</span>
-        ${bm ? '<span class="rev-tag bm">🔖 Đã lưu</span>' : ""}
+        ${bm ? `<button type="button" class="rev-tag bm rev-unbookmark" data-unbookmark="${id}" title="Bỏ lưu câu này">🔖 Đã lưu ✕</button>` : ""}
         <span class="rev-tag ${status}">${label}</span>
       </div>
       <p class="rev-q">${fmt(q.q)}</p>
@@ -1534,9 +1683,34 @@ $("#clearStatsBtn").addEventListener("click", async () => {
 });
 document.addEventListener("click", (e) => {
   const chip = e.target.closest(".mistake-chip");
-  if (!chip) return;
-  const q = byId.get(Number(chip.dataset.qid));
-  if (q) toast(`Câu ${q.id}: ${q.q.slice(0, 110)}…`);
+  if (chip) {
+    const id = Number(chip.dataset.qid);
+    const wrap = chip.closest(".mistake-chips");
+    if (!wrap) return;
+    const existing = document.querySelector(".peek-card");
+    const same = existing && Number(existing.dataset.peekId) === id;
+    document.querySelectorAll(".peek-card").forEach(el => el.remove());
+    if (!same) wrap.insertAdjacentHTML("afterend", peekHtml(id));
+    return;
+  }
+  const close = e.target.closest("[data-peek-close]");
+  if (close) {
+    e.preventDefault();
+    const card = close.closest(".peek-card");
+    if (card) card.remove();
+    return;
+  }
+  const drill = e.target.closest("[data-peek-drill]");
+  if (drill) {
+    e.preventDefault();
+    startPractice([Number(drill.dataset.peekDrill)]);
+    return;
+  }
+  const bmPractice = e.target.closest("[data-bookmark-practice]");
+  if (bmPractice) {
+    e.preventDefault();
+    startPractice(Object.keys(loadBookmarks()));
+  }
 });
 
 /* ---------- Update notice ---------- */
@@ -1568,7 +1742,7 @@ $("#countMinus").addEventListener("click", () => stepCount(-1));
 $("#countPlus").addEventListener("click", () => stepCount(1));
 $("#qCount").addEventListener("input", () => {
   const n = Number($("#qCount").value);
-  if (Number.isFinite(n) && n >= 1 && n <= QUESTIONS.length) syncCountUI(Math.floor(n));
+  if (Number.isFinite(n) && n >= 1 && n <= TOTAL_Q) syncCountUI(Math.floor(n));
 });
 $("#qCount").addEventListener("blur", readCount);
 $("#qCount").addEventListener("keydown", (e) => {
@@ -1624,6 +1798,15 @@ $("#nextBtn").addEventListener("click", nextQuestion);
 $("#checkBtn").addEventListener("click", checkAnswer);
 $("#bmBtn").addEventListener("click", () => { toggleBookmark(); });
 $("#feedback").addEventListener("click", (e) => {
+  const stop = e.target.closest("[data-stop-advance]");
+  if (stop) {
+    e.preventDefault();
+    clearAdvance();
+    renderQuestion(false);
+    const next = $("#nextBtn");
+    if (next) next.focus({ preventScroll: true });
+    return;
+  }
   const btn = e.target.closest("[data-next]");
   if (!btn) return;
   e.preventDefault();
@@ -1647,6 +1830,19 @@ $("#reviewTabs").addEventListener("click", (e) => {
   reviewFilter = tab.dataset.filter;
   $$("#reviewTabs .tab").forEach(t => t.classList.toggle("active", t === tab));
   renderReview();
+});
+$("#reviewList").addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-unbookmark]");
+  if (!btn || !state) return;
+  const id = Number(btn.dataset.unbookmark);
+  if (state.bookmarks) delete state.bookmarks[id];
+  const all = loadBookmarks();
+  delete all[id];
+  saveBookmarks(all);
+  saveState();
+  $("#tabBookmarks").textContent = bookmarkCount(state);
+  renderReview();
+  toast("Đã bỏ lưu câu này.");
 });
 $("#retryWrongBtn").addEventListener("click", () => {
   if (!state) return;
@@ -1711,9 +1907,30 @@ document.addEventListener("keydown", (e) => {
 /* ---------- Boot ---------- */
 window.addEventListener("beforeunload", () => { if (state && !state.finished) saveState(); });
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden" && state && !state.finished) saveState();
+  if (document.visibilityState === "hidden" && state && !state.finished) {
+    clearAdvance();
+    saveState();
+  }
 });
 
+(function initCounts() {
+  const setText = (sel, value) => {
+    const el = $(sel);
+    if (el) el.textContent = String(value);
+  };
+  setText("#heroTotal", TOTAL_Q);
+  setText("#heroTotalStat", TOTAL_Q);
+  setText("#heroMultiStat", MULTI_Q);
+  const input = $("#qCount");
+  if (input) {
+    input.max = String(TOTAL_Q);
+    input.value = String(clampCount(input.value));
+  }
+  const presetAll = document.querySelector('#countPresets .preset[data-count="165"]');
+  if (presetAll) presetAll.dataset.count = String(TOTAL_Q);
+  syncCountUI(clampCount(input ? input.value : TOTAL_Q));
+  document.title = `Trắc nghiệm Mạng máy tính — ${TOTAL_Q} câu`;
+})();
 refreshResumeBox();
 renderStatsBox();
 </script>
