@@ -595,7 +595,7 @@
 </head>
 <body>
 <div id="updateNotice" class="update-notice" role="alert">
-  <span>🆕 Mới: thêm 40 câu hỏi Mạng máy tính tiếng Việt vào chuỗi trắc nghiệm — tổng cộng 165 câu</span>
+  <span>🆕 Mới: thêm 170 câu một đáp án từ Chương 1–2 (Kurose &amp; Ross) — tổng cộng 335 câu, có chế độ “Chỉ câu 1 đáp án”</span>
   <button type="button" id="noticeClose" aria-label="Đóng thông báo">✕</button>
 </div>
 <div class="app">
@@ -728,7 +728,7 @@
 
       <aside class="quiz-side">
         <div class="side-card">
-          <div class="side-head"><b>Danh sách câu</b><span id="answeredCount">0/165</span></div>
+          <div class="side-head"><b>Danh sách câu</b><span id="answeredCount">0/335</span></div>
           <div class="legend">
             <span><i class="dot answered"></i>Đã làm</span>
             <span><i class="dot correct"></i>Đúng</span>
@@ -979,7 +979,7 @@ const STORAGE_KEY = "mmt-quiz-state-v1";
 const THEME_KEY = "mmt-quiz-theme";
 const HISTORY_KEY = "mmt-quiz-history-v1";
 const BOOKMARK_KEY = "mmt-quiz-bookmarks-v1";
-const NOTICE_KEY = "mmt-quiz-notice-v3";
+const NOTICE_KEY = "mmt-quiz-notice-v4";
 const ALL_IDS = QUESTIONS.map(q => q.id);
 const TOTAL_Q = QUESTIONS.length;
 const MULTI_Q = QUESTIONS.filter(q => q.a.length > 1).length;
