@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Trắc nghiệm Mạng máy tính — 335 câu</title>
+<title>Trắc nghiệm Mạng máy tính — 323 câu</title>
 <style>
   :root{
     --bg:#f6f7fb; --surface:#ffffff; --surface-2:#f1f4fa;
@@ -609,7 +609,7 @@
 </head>
 <body>
 <div id="updateNotice" class="update-notice" role="alert">
-  <span>🆕 Bộ 170 câu Chương 1–2 đã tách thành quiz riêng — chọn “Chương 1–2” ở màn hình bắt đầu</span>
+  <span>🆕 Bộ 158 câu Chương 1–2 đã tách thành quiz riêng — chọn “Chương 1–2” ở màn hình bắt đầu</span>
   <button type="button" id="noticeClose" aria-label="Đóng thông báo">✕</button>
 </div>
 <div class="app">
@@ -620,21 +620,21 @@
     <div class="start-wrap">
       <div class="hero">
         <span class="eyebrow">Mạng máy tính · Ôn thi</span>
-        <h1><span id="heroTotal">335</span> câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
-        <p>Ngân hàng câu hỏi Mạng máy tính: bộ câu hỏi từ file Word và bộ riêng 170 câu một đáp án biên soạn từ Chương 1–2 (Kurose &amp; Ross). Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
+        <h1><span id="heroTotal">323</span> câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
+        <p>Ngân hàng câu hỏi Mạng máy tính: bộ câu hỏi từ file Word và bộ riêng 158 câu một đáp án biên soạn từ Chương 1–2 (Kurose &amp; Ross). Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
         <ul class="hero-points">
           <li>Phản hồi đúng/sai và giải thích chi tiết</li>
           <li>Hỗ trợ câu chọn 2–3 đáp án</li>
           <li>Tự lưu tiến độ, làm lại riêng câu sai</li>
           <li>Chọn số câu, chấm ngay và tự chuyển câu</li>
           <li>Lịch sử làm bài & phân tích câu hay sai</li>
-          <li>170 câu một đáp án mới: khái niệm, tình huống, tính toán</li>
+          <li>158 câu một đáp án mới: khái niệm, tình huống, tính toán</li>
           <li>Chế độ chỉ luyện câu một đáp án để rèn phản xạ</li>
         </ul>
         <div class="hero-stats">
-          <div><b id="heroTotalStat">335</b><span>câu hỏi</span></div>
+          <div><b id="heroTotalStat">323</b><span>câu hỏi</span></div>
           <div><b id="heroMultiStat">48</b><span>câu chọn nhiều</span></div>
-          <div><b id="heroSoloStat">287</b><span>câu một đáp án</span></div>
+          <div><b id="heroSoloStat">275</b><span>câu một đáp án</span></div>
         </div>
       </div>
 
@@ -647,7 +647,7 @@
           </button>
           <button type="button" class="set-btn" data-set="new" aria-pressed="false">
             <b>Chương 1–2</b>
-            <small>170 câu một đáp án · Kurose &amp; Ross</small>
+            <small>158 câu một đáp án · Kurose &amp; Ross</small>
           </button>
         </div>
 
@@ -673,11 +673,11 @@
         <div class="count-box">
           <div class="count-head">
             <label for="qCount" id="countLabel">Số câu muốn làm</label>
-            <span id="countHint">Tối đa 335 câu</span>
+            <span id="countHint">Tối đa 323 câu</span>
           </div>
           <div class="count-row">
             <button type="button" id="countMinus" class="count-step" aria-label="Giảm số câu">−</button>
-            <input id="qCount" class="count-input" type="number" min="1" max="335" step="1" value="335" inputmode="numeric" aria-labelledby="countLabel">
+            <input id="qCount" class="count-input" type="number" min="1" max="323" step="1" value="323" inputmode="numeric" aria-labelledby="countLabel">
             <button type="button" id="countPlus" class="count-step" aria-label="Tăng số câu">+</button>
             <span class="count-unit">câu</span>
           </div>
@@ -687,7 +687,7 @@
             <button type="button" class="preset" data-count="30">30 câu</button>
             <button type="button" class="preset" data-count="50">50 câu</button>
             <button type="button" class="preset" data-count="100">100 câu</button>
-            <button type="button" class="preset active" id="presetAll" data-count="335">Tất cả</button>
+            <button type="button" class="preset active" id="presetAll" data-count="323">Tất cả</button>
           </div>
         </div>
 
@@ -707,7 +707,7 @@
           <div id="statsBody"></div>
         </div>
         <p class="hint">Phím tắt: <kbd>A</kbd>–<kbd>E</kbd> chọn · <kbd>Enter</kbd> kiểm tra/tiếp · <kbd>Space</kbd> câu tiếp · <kbd>S</kbd> lưu câu · <kbd>←</kbd><kbd>→</kbd> chuyển câu</p>
-        <p class="source-note">Đáp án bộ câu cũ đã đối chiếu file Word. 170 câu mới (một đáp án) được biên soạn từ slide Chương 1 “Introduction” và Chương 2 “Application Layer” — Computer Networking: A Top-Down Approach, 8th edition (Kurose &amp; Ross).</p>
+        <p class="source-note">Bộ câu cũ đối chiếu file Word. 158 câu mới (một đáp án) biên soạn từ Chương 1 “Introduction” (không gồm lịch sử Internet) và Chương 2 “Application Layer” (không gồm video streaming và mạng phân phối nội dung/CDN) — Computer Networking: A Top-Down Approach, 8th edition (Kurose &amp; Ross).</p>
       </div>
     </div>
   </section>
@@ -732,7 +732,7 @@
       <div class="quiz-main">
         <article class="q-card">
           <div class="q-head">
-            <span id="qCounter" class="q-counter">Câu 1 / 335</span>
+            <span id="qCounter" class="q-counter">Câu 1 / 323</span>
             <span id="qBadge" class="badge hidden"></span>
             <span class="q-head-spacer"></span>
             <span id="qStatus" class="status-pill hidden"></span>
@@ -754,7 +754,7 @@
 
       <aside class="quiz-side">
         <div class="side-card">
-          <div class="side-head"><b>Danh sách câu</b><span id="answeredCount">0/335</span></div>
+          <div class="side-head"><b>Danh sách câu</b><span id="answeredCount">0/323</span></div>
           <div class="legend">
             <span><i class="dot answered"></i>Đã làm</span>
             <span><i class="dot correct"></i>Đúng</span>
@@ -892,10 +892,6 @@ const QUESTIONS_EXTRA = [
 {"id":229,"q":"Tầng vật lý làm gì?","note":null,"opts":["Truyền bit “trên dây”","Định tuyến gói","Chạy HTTP","Phân giải DNS"],"pick":1,"a":[0],"exp":"Physical layer truyền các bit thô trên phương tiện truyền dẫn.","notes":null},
 {"id":230,"q":"Hai tầng của OSI không có trong Internet protocol stack là:","note":null,"opts":["Presentation và session","Transport và network","Link và physical","Application và transport"],"pick":1,"a":[0],"exp":"OSI có 7 tầng; Internet stack bỏ presentation và session — các dịch vụ này nếu cần phải làm trong ứng dụng.","notes":null},
 {"id":231,"q":"Thứ tự đóng gói (encapsulation) từ trên xuống là:","note":null,"opts":["Message → segment → datagram → frame","Frame → datagram → segment → message","Segment → message → frame → datagram","Datagram → frame → message → segment"],"pick":1,"a":[0],"exp":"Ứng dụng tạo message, transport thêm header thành segment, network thành datagram, link thành frame.","notes":null},
-{"id":232,"q":"Năm 1969, sự kiện nào xảy ra?","note":null,"opts":["Node ARPAnet đầu tiên đi vào hoạt động","TCP/IP được triển khai","DNS ra đời","Web ra đời"],"pick":1,"a":[0],"exp":"1969: first ARPAnet node operational. TCP/IP triển khai năm 1983; DNS năm 1983; Web đầu thập niên 1990.","notes":null},
-{"id":233,"q":"Kleinrock nổi tiếng với đóng góp nào?","note":null,"opts":["Lý thuyết xếp hàng chứng minh hiệu quả của chuyển mạch gói","Phát minh Ethernet","Tạo ra DNS","Phát minh Wi-Fi"],"pick":1,"a":[0],"exp":"1961: Kleinrock dùng queueing theory để chứng minh hiệu quả của packet switching.","notes":null},
-{"id":234,"q":"Cerf và Kahn (1974) đề xuất:","note":null,"opts":["Kiến trúc kết nối các mạng với nhau (internetworking)","Giao thức SMTP","Hệ thống tên miền DNS","Mô hình OSI"],"pick":1,"a":[0],"exp":"Cerf và Kahn đề xuất kiến trúc internetworking với minimalism, best-effort, stateless routing, decentralized control.","notes":null},
-{"id":235,"q":"Năm 1983 gắn với sự kiện:","note":null,"opts":["Triển khai TCP/IP trên ARPAnet","ARPAnet ngừng hoạt động","Web ra đời","Ethernet ra đời"],"pick":1,"a":[0],"exp":"1983: deployment of TCP/IP; cũng là năm DNS được định nghĩa.","notes":null},
 {"id":236,"q":"Trong mô hình client-server, server thường có đặc điểm:","note":null,"opts":["Luôn hoạt động, IP cố định, thường ở data center","Kết nối gián đoạn, IP động","Không bao giờ chạy ứng dụng","Chỉ giao tiếp với client khác"],"pick":1,"a":[0],"exp":"Server luôn sẵn sàng, có địa chỉ IP cố định và thường đặt trong data center để mở rộng quy mô.","notes":null},
 {"id":237,"q":"Trong mô hình client-server, các client:","note":null,"opts":["Không giao tiếp trực tiếp với nhau","Luôn có IP tĩnh","Phải luôn hoạt động 24/7","Đóng vai trò server"],"pick":1,"a":[0],"exp":"Client liên hệ với server; các client không giao tiếp trực tiếp với nhau, có thể kết nối gián đoạn và dùng IP động.","notes":null},
 {"id":238,"q":"Kiến trúc P2P có tính “self-scalability” vì:","note":null,"opts":["Peer mới mang thêm dung lượng phục vụ lẫn nhu cầu","Không cần kết nối Internet","Chỉ dùng một server trung tâm","Không có peer nào rời mạng"],"pick":1,"a":[0],"exp":"Trong P2P, mỗi peer vừa yêu cầu vừa cung cấp dịch vụ, nên peer mới làm tăng cả nhu cầu lẫn năng lực phục vụ.","notes":null},
@@ -981,14 +977,6 @@ const QUESTIONS_EXTRA = [
 {"id":318,"q":"Optimistic unchoke diễn ra bao lâu một lần?","note":null,"opts":["30 giây","10 giây","1 phút","5 phút"],"pick":1,"a":[0],"exp":"Mỗi 30 giây, peer chọn ngẫu nhiên một peer khác để “optimistically unchoke”.","notes":null},
 {"id":319,"q":"Churn trong P2P là:","note":null,"opts":["Peer vào/ra mạng liên tục","Tốc độ tải tăng","File bị nén","Chunk bị mã hóa"],"pick":1,"a":[0],"exp":"Churn là hiện tượng peer tham gia và rời torrent liên tục, gây quản lý phức tạp.","notes":null},
 {"id":320,"q":"Trong client-server, thời gian phân phối file F cho N client tăng:","note":null,"opts":["Tuyến tính theo N","Không đổi","Giảm theo N","Logarit"],"pick":1,"a":[0],"exp":"Client-server cần server gửi N bản sao tuần tự, nên thời gian tăng tuyến tính theo N.","notes":null},
-{"id":321,"q":"Spatial coding nén video dựa trên:","note":null,"opts":["Sự lặp lại trong cùng một khung hình","Khác biệt giữa các khung hình","Âm thanh","Địa chỉ IP"],"pick":1,"a":[0],"exp":"Spatial coding khai thác redundancy trong một frame (ví dụ gửi màu và số lần lặp).","notes":null},
-{"id":322,"q":"Temporal coding nén video dựa trên:","note":null,"opts":["Khác biệt giữa khung hình hiện tại và khung trước","Màu sắc","Độ phân giải","Băng thông"],"pick":1,"a":[0],"exp":"Temporal coding chỉ gửi phần khác biệt so với frame trước.","notes":null},
-{"id":323,"q":"DASH cho phép client:","note":null,"opts":["Đo băng thông và chọn mức mã hóa phù hợp từng chunk","Chỉ xem một mức chất lượng","Không cần manifest","Không dùng HTTP"],"pick":1,"a":[0],"exp":"Với DASH, client đo băng thông, đọc manifest và chọn encoding rate tối đa khả thi cho từng chunk.","notes":null},
-{"id":324,"q":"Manifest file trong DASH chứa:","note":null,"opts":["URL của các chunk ở nhiều mức chất lượng","Mật khẩu người dùng","Bảng định tuyến","Bản ghi DNS"],"pick":1,"a":[0],"exp":"Manifest cung cấp URL cho các chunk ở các mức encoding khác nhau.","notes":null},
-{"id":325,"q":"CDN “enter deep” có đặc điểm:","note":null,"opts":["Đặt nhiều server sâu trong access network gần người dùng","Đặt ít cluster lớn xa người dùng","Chỉ một server trung tâm","Không lưu bản sao"],"pick":1,"a":[0],"exp":"Enter deep: đưa nhiều CDN server vào sâu các access network, gần người dùng (ví dụ Akamai).","notes":null},
-{"id":326,"q":"CDN “bring home” có đặc điểm:","note":null,"opts":["Số cluster lớn hơn nhưng đặt gần access network","Đặt server trong từng hộ gia đình","Chỉ dùng vệ tinh","Không có POP"],"pick":1,"a":[0],"exp":"Bring home: số cluster ít hơn (hàng chục), lớn hơn, đặt trong POP gần nhưng không nằm trong access network.","notes":null},
-{"id":327,"q":"Mục tiêu chính của CDN:","note":null,"opts":["Phân phối nội dung từ vị trí gần người dùng, giảm trễ và tải","Mã hóa email","Cấp phát IP","Định tuyến BGP"],"pick":1,"a":[0],"exp":"CDN lưu bản sao nội dung ở nhiều vị trí địa lý để phục vụ người dùng từ nơi gần nhất.","notes":null},
-{"id":328,"q":"OTT (over the top) nghĩa là:","note":null,"opts":["Dịch vụ chạy trên hạ tầng Internet của ISP khác","Giao thức tầng vận chuyển","Một loại cáp","Một bản ghi DNS"],"pick":1,"a":[0],"exp":"OTT chỉ dịch vụ nội dung chạy “phía trên” hạ tầng Internet của ISP, ví dụ Netflix, YouTube.","notes":null},
 {"id":329,"q":"Socket UDP được tạo bằng:","note":null,"opts":["socket(AF_INET, SOCK_DGRAM)","socket(AF_INET, SOCK_STREAM)","bind()","listen()"],"pick":1,"a":[0],"exp":"SOCK_DGRAM tạo UDP socket; SOCK_STREAM tạo TCP socket.","notes":null},
 {"id":330,"q":"Với UDP, bên gửi phải:","note":null,"opts":["Đính kèm địa chỉ IP và cổng đích vào mỗi datagram","Thiết lập kết nối trước","Gọi listen","Gọi accept"],"pick":1,"a":[0],"exp":"UDP không có connection; mỗi lần gửi, sender phải gắn IP đích và port đích (sendto).","notes":null},
 {"id":331,"q":"recvfrom() trong UDP trả về:","note":null,"opts":["Dữ liệu và địa chỉ của bên gửi","Chỉ dữ liệu","Chỉ địa chỉ","Một socket mới"],"pick":1,"a":[0],"exp":"recvfrom() trả về datagram và địa chỉ (IP, port) của sender.","notes":null},
@@ -1005,7 +993,7 @@ const STORAGE_KEY = "mmt-quiz-state-v1";
 const THEME_KEY = "mmt-quiz-theme";
 const HISTORY_KEY = "mmt-quiz-history-v1";
 const BOOKMARK_KEY = "mmt-quiz-bookmarks-v1";
-const NOTICE_KEY = "mmt-quiz-notice-v5";
+const NOTICE_KEY = "mmt-quiz-notice-v6";
 const ALL_IDS = QUESTIONS.map(q => q.id);
 const NEW_IDS = QUESTIONS_EXTRA.map(q => q.id);
 const TOTAL_Q = QUESTIONS.length;
