@@ -103,6 +103,7 @@
     background:linear-gradient(90deg,var(--accent),var(--accent-2));
   }
   .start-card h2{margin:0 0 16px; font-size:17px; letter-spacing:-.01em}
+  .start-card h2.mt{margin-top:22px}
   .mode-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:9px}
   .mode-card{
     text-align:left; background:var(--surface-2); border:1.5px solid var(--line);
@@ -114,6 +115,18 @@
   .mode-icon{font-size:19px; line-height:1.2}
   .mode-card b{font-size:13.5px}
   .mode-card small{font-size:11px; color:var(--muted); line-height:1.4}
+  .set-grid{display:grid; grid-template-columns:1fr 1fr; gap:9px}
+  .set-btn{
+    text-align:left; background:var(--surface-2); border:1.5px solid var(--line);
+    border-radius:14px; padding:12px 14px; cursor:pointer; color:var(--text);
+    display:flex; flex-direction:column; gap:3px; transition:border-color .16s, background .16s, transform .16s;
+  }
+  .set-btn:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .set-btn.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 12%,transparent)}
+  .set-btn b{font-size:13.5px}
+  .set-btn small{font-size:11px; color:var(--muted); line-height:1.4}
+  .set-btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .switch.disabled{opacity:.45; cursor:not-allowed}
   .count-box{
     margin-top:16px; padding:14px; border:1px solid var(--line); border-radius:14px;
     background:var(--surface-2);
@@ -574,6 +587,7 @@
     .hero-stats b{font-size:22px}
     .start-card{padding:20px}
     .mode-grid{grid-template-columns:1fr}
+    .set-grid{grid-template-columns:1fr}
     .start-card .hint{display:none}
     .count-presets{display:grid; grid-template-columns:repeat(5,1fr); gap:5px}
     .count-presets .preset{padding:5px 0; font-size:10.5px; text-align:center}
@@ -595,7 +609,7 @@
 </head>
 <body>
 <div id="updateNotice" class="update-notice" role="alert">
-  <span>🆕 Mới: thêm 170 câu một đáp án từ Chương 1–2 (Kurose &amp; Ross) — tổng cộng 335 câu, có chế độ “Chỉ câu 1 đáp án”</span>
+  <span>🆕 Bộ 170 câu Chương 1–2 đã tách thành quiz riêng — chọn “Chương 1–2” ở màn hình bắt đầu</span>
   <button type="button" id="noticeClose" aria-label="Đóng thông báo">✕</button>
 </div>
 <div class="app">
@@ -607,7 +621,7 @@
       <div class="hero">
         <span class="eyebrow">Mạng máy tính · Ôn thi</span>
         <h1><span id="heroTotal">335</span> câu trắc nghiệm<br><em>tự luyện, tự chấm</em></h1>
-        <p>Ngân hàng câu hỏi Mạng máy tính, gồm bộ câu hỏi từ file Word và 170 câu một đáp án mới biên soạn từ Chương 1–2 (Kurose &amp; Ross). Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
+        <p>Ngân hàng câu hỏi Mạng máy tính: bộ câu hỏi từ file Word và bộ riêng 170 câu một đáp án biên soạn từ Chương 1–2 (Kurose &amp; Ross). Làm bài, chấm điểm ngay và đọc giải thích cho từng câu.</p>
         <ul class="hero-points">
           <li>Phản hồi đúng/sai và giải thích chi tiết</li>
           <li>Hỗ trợ câu chọn 2–3 đáp án</li>
@@ -625,7 +639,19 @@
       </div>
 
       <div class="start-card">
-        <h2>Chọn chế độ làm bài</h2>
+        <h2>Chọn bộ câu hỏi</h2>
+        <div class="set-grid" id="setSwitch" role="group" aria-label="Chọn bộ câu hỏi">
+          <button type="button" class="set-btn selected" data-set="all" aria-pressed="true">
+            <b>Tất cả</b>
+            <small>Toàn bộ ngân hàng · đủ dạng câu</small>
+          </button>
+          <button type="button" class="set-btn" data-set="new" aria-pressed="false">
+            <b>Chương 1–2</b>
+            <small>170 câu một đáp án · Kurose &amp; Ross</small>
+          </button>
+        </div>
+
+        <h2 class="mt">Chọn chế độ làm bài</h2>
         <div class="mode-grid">
           <button type="button" class="mode-card" data-mode="practice" aria-pressed="false">
             <span class="mode-icon">🎯</span>
@@ -979,19 +1005,25 @@ const STORAGE_KEY = "mmt-quiz-state-v1";
 const THEME_KEY = "mmt-quiz-theme";
 const HISTORY_KEY = "mmt-quiz-history-v1";
 const BOOKMARK_KEY = "mmt-quiz-bookmarks-v1";
-const NOTICE_KEY = "mmt-quiz-notice-v4";
+const NOTICE_KEY = "mmt-quiz-notice-v5";
 const ALL_IDS = QUESTIONS.map(q => q.id);
+const NEW_IDS = QUESTIONS_EXTRA.map(q => q.id);
 const TOTAL_Q = QUESTIONS.length;
 const MULTI_Q = QUESTIONS.filter(q => q.a.length > 1).length;
 const SOLO_IDS = QUESTIONS.filter(q => q.a.length === 1).map(q => q.id);
 const AUTO_ADVANCE_MS = 5000;
 
-function poolIds() { return soloOnly ? SOLO_IDS : ALL_IDS; }
-function poolSize() { return soloOnly ? SOLO_IDS.length : TOTAL_Q; }
+function idsFor(set, solo) {
+  const base = set === "new" ? NEW_IDS : ALL_IDS;
+  return solo ? base.filter(id => byId.get(id).a.length === 1) : base.slice();
+}
+function poolIds() { return idsFor(setFilter, soloOnly); }
+function poolSize() { return poolIds().length; }
 
 let state = null;
 let selectedMode = "quiz";
 let soloOnly = false;
+let setFilter = "all";
 let timerId = null;
 let toastTimer = null;
 let advanceTimer = null;
@@ -1134,10 +1166,19 @@ function readCount() {
   syncCountUI(n);
   return n;
 }
-function buildQuizIds(count, shuffleQuestions) {
-  const pool = poolIds().slice();
+function buildQuizIds(count, shuffleQuestions, baseIds) {
+  const pool = (baseIds && baseIds.length ? baseIds.slice() : poolIds());
   if (shuffleQuestions) shuffle(pool);
-  return pool.slice(0, clampCount(count));
+  const n = Math.min(pool.length, Math.max(1, Math.floor(Number(count)) || 1));
+  return pool.slice(0, n);
+}
+function refreshCountLimits() {
+  const input = $("#qCount");
+  const max = poolSize();
+  input.max = String(max);
+  const n = Math.min(Number(input.value) || max, max);
+  input.value = String(n);
+  syncCountUI(n);
 }
 function stepCount(delta) {
   const input = $("#qCount");
@@ -1382,11 +1423,13 @@ function makeOptsOrder(shuffleOptions) {
 }
 function startQuiz(mode, shuffleQuestions, shuffleOptions, ids) {
   clearAdvance();
-  const order = (ids && ids.length ? ids.slice() : ALL_IDS.slice());
+  const order = (ids && ids.length ? ids.slice() : poolIds());
   if (shuffleQuestions) shuffle(order);
   state = {
     v: 1,
     mode,
+    set: setFilter,
+    solo: soloOnly,
     shuffleQ: !!shuffleQuestions,
     shuffleO: !!shuffleOptions,
     order,
@@ -1401,7 +1444,7 @@ function startQuiz(mode, shuffleQuestions, shuffleOptions, ids) {
     submittedAt: null
   };
   selectedMode = mode;
-  $("#modeChip").textContent = modeLabel(mode);
+  $("#modeChip").textContent = modeLabel(mode) + (setFilter === "new" ? " · Chương 1–2" : "");
   showScreen("quiz");
   if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   startTimer();
@@ -1415,8 +1458,11 @@ function resumeQuiz(saved) {
   state.bookmarks = Object.assign({}, state.bookmarks || {}, loadBookmarks());
   saveBookmarks(state.bookmarks);
   state.runSince = state.finished ? null : Date.now();
+  setFilter = state.set === "new" ? "new" : "all";
+  soloOnly = !!state.solo;
+  syncSetUI();
   selectedMode = state.mode;
-  $("#modeChip").textContent = modeLabel(state.mode);
+  $("#modeChip").textContent = modeLabel(state.mode) + (setFilter === "new" ? " · Chương 1–2" : "");
   if (state.finished) {
     showScreen("result");
     renderResults();
@@ -1850,6 +1896,12 @@ function backHome() {
   if (state && !state.finished) saveState();
   clearAdvance();
   stopTimer();
+  if (state && state.set) {
+    setFilter = state.set === "new" ? "new" : "all";
+    soloOnly = !!state.solo;
+    syncSetUI();
+    refreshCountLimits();
+  }
   showScreen("start");
   refreshResumeBox();
   renderStatsBox();
@@ -1912,6 +1964,45 @@ document.addEventListener("click", (e) => {
 })();
 
 /* ---------- Events: start screen ---------- */
+function syncSetUI() {
+  $$("#setSwitch .set-btn").forEach(b => {
+    const on = b.dataset.set === setFilter;
+    b.classList.toggle("selected", on);
+    b.setAttribute("aria-pressed", String(on));
+  });
+  const solo = $("#soloOnly");
+  const wrap = solo.closest(".switch");
+  if (setFilter === "new") {
+    solo.checked = false;
+    soloOnly = false;
+    solo.disabled = true;
+    wrap.classList.add("disabled");
+    wrap.title = "Bộ Chương 1–2 toàn câu một đáp án, không cần bật";
+  } else {
+    solo.checked = soloOnly;
+    solo.disabled = false;
+    wrap.classList.remove("disabled");
+    wrap.title = "Chỉ lấy các câu có đúng 1 đáp án đúng";
+  }
+}
+function applySetFilter(next) {
+  const input = $("#qCount");
+  const wasAll = Number(input.value) >= poolSize();
+  setFilter = next === "new" ? "new" : "all";
+  syncSetUI();
+  const max = poolSize();
+  input.max = String(max);
+  const n = wasAll ? max : Math.min(Number(input.value) || max, max);
+  input.value = String(n);
+  syncCountUI(n);
+}
+
+$("#setSwitch").addEventListener("click", (e) => {
+  const btn = e.target.closest(".set-btn");
+  if (!btn) return;
+  applySetFilter(btn.dataset.set);
+});
+
 $$(".mode-card").forEach(btn => {
   btn.addEventListener("click", () => {
     selectedMode = btn.dataset.mode;
@@ -1927,12 +2018,7 @@ $("#countMinus").addEventListener("click", () => stepCount(-1));
 $("#countPlus").addEventListener("click", () => stepCount(1));
 $("#soloOnly").addEventListener("change", (e) => {
   soloOnly = e.target.checked;
-  const input = $("#qCount");
-  const max = poolSize();
-  input.max = String(max);
-  const n = Math.min(Number(input.value) || max, max);
-  input.value = String(n);
-  syncCountUI(n);
+  refreshCountLimits();
 });
 $("#qCount").addEventListener("input", () => {
   const n = Number($("#qCount").value);
@@ -2049,7 +2135,8 @@ $("#retryWrongBtn").addEventListener("click", () => {
 });
 $("#retryAllBtn").addEventListener("click", () => {
   if (!state) return;
-  startQuiz(state.mode, state.shuffleQ, state.shuffleO, buildQuizIds(state.order.length, state.shuffleQ));
+  const pool = idsFor(state.set === "new" ? "new" : "all", !!state.solo);
+  startQuiz(state.mode, state.shuffleQ, state.shuffleO, buildQuizIds(state.order.length, state.shuffleQ, pool));
 });
 $("#homeBtn").addEventListener("click", backHome);
 
@@ -2116,6 +2203,7 @@ document.addEventListener("visibilitychange", () => {
   setText("#heroTotalStat", TOTAL_Q);
   setText("#heroMultiStat", MULTI_Q);
   setText("#heroSoloStat", SOLO_IDS.length);
+  syncSetUI();
   const input = $("#qCount");
   if (input) {
     input.max = String(TOTAL_Q);
